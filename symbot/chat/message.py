@@ -4,12 +4,17 @@ from symbot.config import prefix
 
 
 class Message:
-    """represents a message received from Twitch as workable object"""
+    """Represents a message received from Twitch as workable object"""
 
     def __init__(self, received):
-        """parse a raw received string to useful attributes"""
+        """
+        Parameters
+        ----------
+         received : str
+            private message from Twitch channel
+        """
 
-        # parser that works on private messages from twitch server
+        # parser that works on private messages from twitch channel
         # maybe try/catch for correct input just in case
         # maybe expand to generic messages
         groups = re.search(':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)', received).groups()
