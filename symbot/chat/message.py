@@ -14,9 +14,9 @@ class Message:
             private message from Twitch channel
         """
 
-        # parser that works on private messages from twitch channel
-        # maybe try/catch for correct input just in case
-        # maybe expand to generic messages
+        # regex parser that works on private messages from twitch channel
+        # MAYBE try/catch for correct input just in case
+        # MAYBE expand to generic messages
         groups = re.search(':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)', received).groups()
 
         # user who sent message
@@ -28,7 +28,7 @@ class Message:
         # content user intended to be received
         self.content = groups[2]
         # checks if message calls a command
-        # maybe make it work without prefix
+        # MAYBE make it work without prefix
         #       as in: no prefix -> every message treated as command
         #       filter for existing commands in control unit
         self.is_command = self.content.startswith(prefix)
