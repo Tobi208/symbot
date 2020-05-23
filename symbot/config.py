@@ -1,9 +1,9 @@
 # connection credentials
 server = 'irc.chat.twitch.tv'
 port = 6667
-token = ''
-nick = ''
-channel = ''
+token = 'oauth:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+nick = 'toms_bot'
+channel = '#tom'
 
 # prefix identifying commands
-prefix = ''
+prefix = '!'
