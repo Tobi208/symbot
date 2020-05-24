@@ -130,3 +130,6 @@ dmypy.json
 
 #.idea project files
 .idea/
+
+# ignore config file for now
+./symbot/config.py
