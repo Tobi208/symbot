@@ -33,7 +33,9 @@ class Message:
         # regex parser that works on private messages from twitch channel
         # MAYBE try/catch for correct input just in case
         # MAYBE expand to generic messages
-        groups = re.search(':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)', received).groups()
+        groups = re.search(
+            ':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)',
+            received).groups()
 
         self.user = groups[0]
         self.channel = groups[1]
