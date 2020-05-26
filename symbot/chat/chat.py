@@ -43,7 +43,7 @@ class Chat:
         # obtain reader, writer streams by connecting to server
         self.reader, self.writer = await asyncio.open_connection(host=server, port=port)
         # log into channel with credentials
-        self.writer.write(f'PASS {token}\r\nNICK {nick}\r\nJOIN {channel}\r\n'.encode('utf-8'))
+        self.writer.write(f'PASS {token}\r\nNICK {nick}\r\nJOIN #{channel}\r\n'.encode('utf-8'))
         await self.writer.drain()
         # drain welcome message from reader
         welcome_msg = await self.reader.readuntil(separator='list\r\n'.encode('utf-8'))
