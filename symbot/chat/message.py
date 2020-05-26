@@ -4,7 +4,23 @@ from symbot.config import prefix
 
 
 class Message:
-    """Represents a message received from Twitch as workable object"""
+    """Represents a message received from Twitch as workable object
+
+    Attributes
+    ----------
+    user : str
+        user who sent the message
+    channel : str
+        channel message was sent to
+    timestamp: float
+        time since epoch
+    content : str
+        actual message sent by user
+    is_command : bool
+        flag if message was meant to call a command
+    command : str
+        name of command stripped of prefix
+    """
 
     def __init__(self, received):
         """
@@ -19,16 +35,22 @@ class Message:
         # MAYBE expand to generic messages
         groups = re.search(':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)', received).groups()
 
-        # user who sent message
         self.user = groups[0]
-        # channel message was sent in
         self.channel = groups[1]
-        # time since epoch
         self.timestamp = time.time()
-        # content user intended to be received
         self.content = groups[2]
-        # checks if message calls a command
         # MAYBE make it work without prefix
-        #       as in: no prefix -> every message treated as command
+        #       as in: no prefix -> every message treated as commands
         #       filter for existing commands in control unit
         self.is_command = self.content.startswith(prefix)
+        self.command = None
+        # if message is meant to call a command
+        # extract command from content
+        if self.is_command:
+            split = self.content.split(' ')
+            self.command = split[0].strip(prefix)
+            if split[1]:
+                self.content = ' '.join(split[1:])
+            else:
+                # content can be empty if message consists of only command
+                self.content = None
