@@ -76,7 +76,7 @@ class Chat:
             # provided by control
             resp = await self.resp_queue.get()
             # upload respond to Twitch channel
-            self.writer.write(f'PRIVMSG {channel} :{resp}\r\n'.encode('utf-8'))
+            self.writer.write(f'PRIVMSG #{channel} :{resp}\r\n'.encode('utf-8'))
             await self.writer.drain()
 
     async def _ping_pong(self, received):
