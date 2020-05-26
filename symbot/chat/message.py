@@ -20,6 +20,8 @@ class Message:
         flag if message was meant to call a command
     command : str
         name of command stripped of prefix
+    context : str
+        context to a command
     """
 
     def __init__(self, received):
@@ -45,14 +47,12 @@ class Message:
         #       as in: no prefix -> every message treated as commands
         #       filter for existing commands in control unit
         self.is_command = self.content.startswith(prefix)
-        self.command = None
+        self.command = ''
+        self.context = ''
         # if message is meant to call a command
-        # extract command from content
+        # extract command and context from content
         if self.is_command:
             split = self.content.split(' ')
             self.command = split[0].strip(prefix)
-            if split[1]:
-                self.content = ' '.join(split[1:])
-            else:
-                # content can be empty if message consists of only command
-                self.content = None
+            if len(split) > 0:
+                self.context = ' '.join(split[1:])
