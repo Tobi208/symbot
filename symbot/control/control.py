@@ -123,7 +123,7 @@ class Control:
             if not self.permissions.check(command.permission_level, msg.user):
                 continue
             # check for cooldown
-            if not self.cooldowns.has_cooldown(command, msg.timestamp):
+            if self.cooldowns.has_cooldown(command, msg.timestamp):
                 continue
             # command is safe to execute
             await command.run(msg)
