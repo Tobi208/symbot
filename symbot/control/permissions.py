@@ -43,7 +43,7 @@ class Permissions:
         Returns
         -------
         bool
-            whether user has sufficient permission
+            user has sufficient permission
         """
 
         if user in self.permissions:
