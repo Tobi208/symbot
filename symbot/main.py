@@ -14,4 +14,5 @@ async def main():
     await asyncio.gather(chat.read(), control.process(), chat.write())
 
 
-asyncio.run(main())
+if __name__ == '__main__':
+    asyncio.run(main())
