@@ -25,6 +25,12 @@ class BaseCommand(ABC):
 
     @property
     @abstractmethod
+    def author(self) -> str:
+        """author of command"""
+        ...
+
+    @property
+    @abstractmethod
     def permission_level(self) -> int:
         """permission level of command"""
         ...

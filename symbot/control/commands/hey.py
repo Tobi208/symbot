@@ -8,6 +8,7 @@ class Command(BaseCommand):
     def __init__(self, control: Control):
         self.control = control
         self.name = 'hey'
+        self.author = 'fd_symbicort'
         self.permission_level = 3
         self.cooldown = 1
 
@@ -26,6 +27,14 @@ class Command(BaseCommand):
     @name.setter
     def name(self, value):
         self._name = value
+
+    @property
+    def author(self) -> str:
+        return self._author
+
+    @author.setter
+    def author(self, value):
+        self._author = value
 
     @property
     def permission_level(self) -> int:
