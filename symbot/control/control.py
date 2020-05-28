@@ -126,4 +126,5 @@ class Control:
             if self.cooldowns.has_cooldown(command, msg.timestamp):
                 continue
             # command is safe to execute
-            await command.run(msg)
+            # append command to asyncio loop
+            asyncio.get_running_loop().create_task(command.run(msg))
