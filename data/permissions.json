@@ -1,5 +1,7 @@
 {
-  "fd_symbicort" : 0,
-  "drvayle" : 1,
-  "chr9kvs6" : 1
+  "broadcaster" : 0,
+  "moderator" : 1,
+  "trusted" : 2,
+  "public" : 3,
+  "blacklisted" : 4
 }
