@@ -5,6 +5,7 @@ from importlib import import_module
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
 from symbot.control.auxiliary.permissions import Permissions
+from symbot.util import updater
 
 
 class Control:

@@ -1,6 +1,8 @@
 import json
 import os
 
+from symbot.util.updater import update_json
+
 
 class Environment:
     """Controller class for Twitch chat's environmental variables
@@ -22,9 +24,11 @@ class Environment:
 
     def __init__(self):
 
-        # load environment from data folder
         # MAYBE put path into config or somewhere else
-        with open(f'{os.getcwd()[:-6]}data{os.sep}environment.json') as file:
+        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}environment.json'
+
+        # load environment from data folder
+        with open(self.file_path) as file:
             self.environment = json.load(file)
 
     def get(self, var):
@@ -62,6 +66,7 @@ class Environment:
 
         # MAYBE handle var not defined
         self.environment[var] = val
+        update_json(self.environment, self.file_path)
         return val
 
     def increment(self, var):
@@ -80,4 +85,5 @@ class Environment:
 
         # MAYBE handle var not defined
         self.environment[var] += 1
+        update_json(self.environment, self.file_path)
         return self.environment[var]

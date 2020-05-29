@@ -1,6 +1,8 @@
 import json
 import os
 
+from symbot.util.updater import update_json
+
 
 class Permissions:
     """Controller class for user permission levels
@@ -14,6 +16,8 @@ class Permissions:
 
     Attributes
     ----------
+    file_path : str
+        path of datafile
     permissions : dict
         dict to store user permission levels
 
@@ -27,9 +31,11 @@ class Permissions:
 
     def __init__(self):
 
-        # load permissions from data folder
         # MAYBE put path into config or somewhere else
-        with open(f'{os.getcwd()[:-6]}data{os.sep}environment.json') as file:
+        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}environment.json'
+
+        # load permissions from data folder
+        with open(self.file_path) as file:
             self.permissions = json.load(file)
 
     def set(self, user, level):
@@ -47,6 +53,7 @@ class Permissions:
             del self.permissions[user]
         else:
             self.permissions[user] = level
+        update_json(self.permissions, self.file_path)
 
     def check(self, cmd_level, user):
         """determine whether user has sufficient permission
