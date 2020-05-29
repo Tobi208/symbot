@@ -9,10 +9,10 @@ class Command(BaseCommand):
 
     def __init__(self, control: Control):
         super().__init__(control)
-        self._name = '!highfive'
+        self.name = '!highfive'
         self.author = 'fd_symbicort'
-        self._permission_level = 3
-        self._cooldown = 10
+        self.permission_level = 3
+        self.cooldown = 0
 
     async def run(self, msg: Message):
         response = msg.user + ' hat ' + msg.context[0] + ' ein highfive gegeben'
