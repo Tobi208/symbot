@@ -15,5 +15,5 @@ class Command(BaseCommand):
         self._cooldown = 10
 
     async def run(self, msg: Message):
-        response = msg.user + ' hat ' + msg.context.split(' ')[0] + ' ein highfive gegeben'
+        response = msg.user + ' hat ' + msg.context[0] + ' ein highfive gegeben'
         await self.control.respond(response)
