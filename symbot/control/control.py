@@ -51,11 +51,11 @@ class Control:
         # dynamically load in commands
         self.commands = []
         # MAYBE make path dynamic
-        for file in os.listdir(f'control{os.sep}commands'):
+        for file in os.listdir(f'dynamic{os.sep}commands'):
             # exclude files not meant to be loaded
             if not file.startswith('_'):
                 # MAYBE make package dynamic
-                module = import_module(f'symbot.control.commands.{file[:-3]}')
+                module = import_module(f'symbot.dynamic.commands.{file[:-3]}')
                 self.commands.append(module.Command(self))
 
         # async data structures
