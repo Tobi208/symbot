@@ -19,6 +19,8 @@ class Permissions:
 
     Methods
     -------
+    set
+        assign permission level to a user
     check
         determine whether user has sufficient permission
     """
@@ -29,6 +31,22 @@ class Permissions:
         # MAYBE put path into config or somewhere else
         with open(f'{os.getcwd()[:-6]}data{os.sep}environment.json') as file:
             self.permissions = json.load(file)
+
+    def set(self, user, level):
+        """assign permission level to a user
+
+        Parameters
+        ----------
+        user : str
+            user identifier
+        level : int
+            permission level
+        """
+
+        if level == 3:
+            del self.permissions[user]
+        else:
+            self.permissions[user] = level
 
     def check(self, cmd_level, user):
         """determine whether user has sufficient permission
