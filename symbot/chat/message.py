@@ -1,6 +1,5 @@
 import re
 import time
-from symbot.config import prefix
 
 
 class Message:
