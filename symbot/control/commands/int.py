@@ -8,7 +8,7 @@ class Command(BaseCommand):
 
     def __init__(self, control: Control):
         super().__init__(control)
-        self.name = 'int'
+        self.name = '!int'
         self.author = 'fd_symbicort'
         self.permission_level = 3
         self.cooldown = 5

@@ -7,9 +7,9 @@ from symbot.control.control import Control
 
 class Command(BaseCommand):
 
-    def __init__(self, control):
+    def __init__(self, control: Control):
         super().__init__(control)
-        self._name = 'highfive'
+        self._name = '!highfive'
         self.author = 'fd_symbicort'
         self._permission_level = 3
         self._cooldown = 10
