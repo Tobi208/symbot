@@ -8,3 +8,4 @@ python twitch chat bot
 - logging
 - make code robust error resistant
 - track command usage with new aux controller
+- filter messages with blacklist
