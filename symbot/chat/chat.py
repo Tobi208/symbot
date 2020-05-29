@@ -61,11 +61,12 @@ class Chat:
                 # parse message to workable object
                 msg = Message(received)
                 print(f'{msg.user}: {msg.content}')  # DEBUG
-                # skip if not command
-                if msg.is_command:
-                    # put to msg_queue
-                    # provides to control
-                    await self.msg_queue.put(msg)
+                # put to msg_queue
+                # provides to control
+                # MAYBE treats every message as command,
+                #       because no identifying prefix is used.
+                #       Monitor performance and change accordingly
+                await self.msg_queue.put(msg)
 
     async def write(self):
         """continuously upload messages to Twitch channel"""
