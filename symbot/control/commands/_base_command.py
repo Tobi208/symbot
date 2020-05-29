@@ -9,37 +9,32 @@ class BaseCommand(ABC):
 
     Abstract base class developers need to implement for new commands.
     Enforces all properties and methods required by controller.
+
+    Attributes
+    ----------
+    control : Control
+        central control element
+    name : str
+        command identifier (default: module name)
+    author : str
+        author identifier (default: None)
+    permission_level : int
+        permission level of command (default: public)
+    cooldown : float
+        minimum seconds between command calls (default: 0)
+
+    Methods
+    -------
+    run
+        execute command under consideration of user message
     """
 
-    @property
-    @abstractmethod
-    def control(self) -> Control:
-        """central controller"""
-        ...
-
-    @property
-    @abstractmethod
-    def name(self) -> str:
-        """command identifier"""
-        ...
-
-    @property
-    @abstractmethod
-    def author(self) -> str:
-        """author of command"""
-        ...
-
-    @property
-    @abstractmethod
-    def permission_level(self) -> int:
-        """permission level of command"""
-        ...
-
-    @property
-    @abstractmethod
-    def cooldown(self) -> float:
-        """minimum time between command calls"""
-        ...
+    def __init__(self, control: Control):
+        self.control = control
+        self.name = self.__module__.split('.')[-1]
+        self.author = ''
+        self.permission_level = 3
+        self.cooldown = 0
 
     @abstractmethod
     async def run(self, msg: Message):
