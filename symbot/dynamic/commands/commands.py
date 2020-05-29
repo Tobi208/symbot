@@ -11,5 +11,5 @@ class Command(BaseCommand):
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
-        response = f'https://github.com/Tobi208/symbot#commands'
+        response = f'https://github.com/tobi208/symbot#commands'
         await self.control.respond(response)

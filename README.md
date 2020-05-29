@@ -2,7 +2,7 @@
 python twitch chat bot
 
 ## commands
-**!commands** : _'https://github.com/Tobi208/symbot#commands'_
+**!commands** : _'https://github.com/tobi208/symbot#commands'_
 
 **!deaths** : _'`{broadcaster}` has died `{deaths}` times :('_
 
