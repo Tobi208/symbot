@@ -1,6 +1,16 @@
 # symbot
 python twitch chat bot
 
+## commands
+**!deaths** : _'`{broadcaster}` has died `{deaths}` times :('_
+
+**hey** : _'Hey there, `{user}` HeyGuys'_
+
+**!highfive `{recipient}`** : _'`{user}` hat `{recipient}` ein highfive gegeben'_
+
+**!int** : _'`{broadcaster}` hat schon `{bad}` mal den turbo int rausgehauen'_
+
+**warum** : _'weil halt'_
 
 ## todo
 - media usage
