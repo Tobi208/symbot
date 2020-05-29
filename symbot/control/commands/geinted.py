@@ -9,8 +9,6 @@ class Command(BaseCommand):
         super().__init__(control)
         self.name = '!geinted'
         self.author = 'fd_symbicort'
-        self.permission_level = 3
-        self.cooldown = 5
 
     async def run(self, msg: Message):
         msg.command = 'int'

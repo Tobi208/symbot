@@ -11,8 +11,6 @@ class Command(BaseCommand):
         super().__init__(control)
         self.name = '!highfive'
         self.author = 'fd_symbicort'
-        self.permission_level = 3
-        self.cooldown = 0
 
     async def run(self, msg: Message):
         response = msg.user + ' hat ' + msg.context[0] + ' ein highfive gegeben'

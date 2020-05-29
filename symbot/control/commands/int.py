@@ -10,8 +10,7 @@ class Command(BaseCommand):
         super().__init__(control)
         self.name = '!int'
         self.author = 'fd_symbicort'
-        self.permission_level = 3
-        self.cooldown = 5
+        self.cooldown = 20
 
     async def run(self, msg: Message):
         bad = self.control.environment.increment('bad')
