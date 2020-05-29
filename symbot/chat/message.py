@@ -33,7 +33,7 @@ class Message:
         # MAYBE try/catch for correct input just in case
         # MAYBE expand to generic messages
         groups = re.search(
-            ':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)?:(.*)',
+            ':(.*)!.*@.*\.tmi\.twitch\.tv PRIVMSG (#.*)? :(.*)',
             received).groups()
 
         self.user = groups[0]
