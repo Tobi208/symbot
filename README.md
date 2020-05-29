@@ -2,6 +2,8 @@
 python twitch chat bot
 
 ## commands
+**!commands** : _'https://github.com/Tobi208/symbot#commands'_
+
 **!deaths** : _'`{broadcaster}` has died `{deaths}` times :('_
 
 **hey** : _'Hey there, `{user}` HeyGuys'_
