@@ -36,7 +36,7 @@ class Cooldowns:
 
         # check for existing entry
         if command in self.cooldowns:
-            # determine whether enough time has passed since last call
+            # if less time since last call has passed than cooldown
             if msg_timestamp - self.cooldowns[command] < command.cooldown:
                 return True
         # if command was not on cooldown, put on cooldown
