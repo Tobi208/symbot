@@ -1,10 +1,18 @@
 import asyncio
+import logging
+import sys
 
 from symbot.chat.chat import Chat
 from symbot.control.control import Control
 
 
 async def main():
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s: %(message)s',
+        handlers=[logging.StreamHandler(sys.stdout)]
+    )
+
     chat = Chat()
     control = Control()
     control.msg_queue = chat.msg_queue
