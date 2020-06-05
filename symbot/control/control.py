@@ -6,6 +6,7 @@ from importlib import import_module
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
 from symbot.control.auxiliary.permissions import Permissions
+from symbot.control.auxiliary.settings import Settings
 
 
 class Control:
@@ -23,6 +24,8 @@ class Control:
         manages environmental variables
     cooldowns : Cooldowns
         tracks command cooldowns
+    settings : Settings
+        overrides default command settings
     commands : list
         list of all commands loaded dynamically
     msg_queue : Queue
@@ -44,11 +47,6 @@ class Control:
 
     def __init__(self):
 
-        # auxiliary controllers
-        self.permissions = Permissions()
-        self.environment = Environment()
-        self.cooldowns = Cooldowns()
-
         # dynamically load in commands
         self.commands = []
         # MAYBE make path dynamic
@@ -59,6 +57,12 @@ class Control:
                 # MAYBE make package dynamic
                 module = import_module(f'symbot.dev.commands.{file[:-3]}')
                 self.commands.append(module.Command(self))
+
+        # auxiliary controllers
+        self.permissions = Permissions()
+        self.environment = Environment()
+        self.cooldowns = Cooldowns()
+        self.settings = Settings(self.commands)
 
         # async data structures
         self.msg_queue = None
