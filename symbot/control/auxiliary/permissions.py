@@ -32,7 +32,7 @@ class Permissions:
     def __init__(self):
 
         # MAYBE put path into config or somewhere else
-        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}environment.json'
+        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}permissions.json'
 
         # load permissions from data folder
         with open(self.file_path) as file:
