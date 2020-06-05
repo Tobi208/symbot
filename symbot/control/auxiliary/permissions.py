@@ -12,7 +12,7 @@ class Permissions:
         0 : broadcaster
         1 : moderator
         2 : whitelisted
-        3 : unregistered
+        3 : default
         4 : blacklisted
 
     Attributes
@@ -33,18 +33,18 @@ class Permissions:
     def __init__(self):
 
         # MAYBE put path into config or somewhere else
-        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}permissions.json'
+        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}user_permissions.json'
 
         # load permissions from data folder
         try:
-            logging.info('loading permissions')
+            logging.info('loading user permissions')
             with open(self.file_path) as file:
                 self.permissions = json.load(file)
         # or start a fresh environment
         except FileNotFoundError:
             logging.info(f'no permissions found in {self.file_path}')
             self.permissions = {}
-            logging.info('created new permissions')
+            logging.info('created new user permissions')
 
     def set(self, user, level):
         """assign permission level to a user

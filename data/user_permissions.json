@@ -1,7 +1,7 @@
 {
   "broadcaster" : 0,
   "moderator" : 1,
-  "trusted" : 2,
-  "public" : 3,
+  "whitelisted" : 2,
+  "default" : 3,
   "blacklisted" : 4
 }
