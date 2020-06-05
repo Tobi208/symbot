@@ -2,6 +2,8 @@ import json
 import logging
 import os
 
+from symbot.util.updater import update_json
+
 
 class Settings:
     """Controller class to override default command settings
@@ -64,9 +66,18 @@ class Settings:
             attribute to be set
         val : object
             value to be assigned
+
+        Returns
+        -------
+        bool
+            assignment was successful
         """
 
-        command = self.commands[cmd_name]
+        try:
+            command = self.commands[cmd_name]
+        except KeyError:
+            logging.info(f'can not find command {cmd_name}')
+            return False
 
         try:
             cmd_attr = command.__getattribute__(attr)
@@ -74,13 +85,36 @@ class Settings:
             if type(cmd_attr) == type(val):
                 # set attribute to val
                 command.__setattr__(attr, val)
+                return True
             else:
                 logging.info(f'{cmd_name} unable to set '
                              f'{attr}, because '
                              f'{val} is of type '
                              f'{type(val)} instead of type'
                              f'{type(cmd_attr)}')
+                return False
         except AttributeError:
             logging.info(f'{cmd_name} unable to set '
                          f'{attr}, because '
                          f'command has no such attribute')
+            return False
+
+    def set(self, cmd_name, attr, val):
+        """set an attribute of a command and update settings data
+
+        Parameters
+        ---------
+        cmd_name : str
+            command identifier
+        attr : str
+            attribute to be set
+        val : object
+            value to be assigned
+        """
+
+        if self.set_attr(cmd_name, attr, val):
+            if cmd_name in self.settings:
+                self.settings[cmd_name][attr] = val
+            else:
+                self.settings[cmd_name] = {attr: val}
+            update_json(self.settings, self.file_path)
