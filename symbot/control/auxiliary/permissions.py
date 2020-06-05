@@ -1,4 +1,5 @@
 import json
+import logging
 import os
 
 from symbot.util.updater import update_json
@@ -35,8 +36,15 @@ class Permissions:
         self.file_path = f'{os.getcwd()[:-6]}data{os.sep}permissions.json'
 
         # load permissions from data folder
-        with open(self.file_path) as file:
-            self.permissions = json.load(file)
+        try:
+            with open(self.file_path) as file:
+                self.permissions = json.load(file)
+            logging.info('loaded permissions')
+        # or start a fresh environment
+        except FileNotFoundError:
+            logging.info(f'no permissions data found in {self.file_path}')
+            self.permissions = {}
+            logging.info('created new permissions')
 
     def set(self, user, level):
         """assign permission level to a user
