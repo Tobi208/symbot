@@ -1,4 +1,5 @@
 import asyncio
+import logging
 import os
 from importlib import import_module
 
@@ -51,6 +52,7 @@ class Control:
         # dynamically load in commands
         self.commands = []
         # MAYBE make path dynamic
+        logging.info('loading user commands')
         for file in os.listdir(f'dynamic{os.sep}commands'):
             # exclude files not meant to be loaded
             if not file.startswith('_'):
@@ -121,9 +123,15 @@ class Control:
                 continue
             # check for permission
             if not self.permissions.check(command.permission_level, msg.user):
+                logging.info(
+                    f'({msg.user})'
+                    f' has insufficient permission to call '
+                    f'({command.name})'
+                )
                 continue
             # check for cooldown
             if self.cooldowns.has_cooldown(command, msg.timestamp):
+                logging.info(f'({command.name}) is still on cooldown')
                 continue
             # command is safe to execute
             # append command to asyncio loop

@@ -43,20 +43,21 @@ class Chat:
         """open an asyncio connection to a server"""
 
         # obtain reader, writer streams by connecting to server
+        logging.info('connecting to server')
         self.reader, self.writer = await asyncio.open_connection(host=server, port=port)
-        logging.info('connected to server')
         # log into channel with credentials
+        logging.info('logging in')
         self.writer.write(f'PASS {token}\r\nNICK {nick}\r\nJOIN #{channel}\r\n'.encode('utf-8'))
         await self.writer.drain()
-        logging.info('logged in')
         # drain welcome message from reader
+        logging.info('receiving welcome message')
         await self.reader.readuntil(separator='list\r\n'.encode('utf-8'))
-        logging.info('received welcome message')
 
     async def read(self):
         """continuously download messages from Twitch channel"""
 
         # run forever
+        logging.info('awaiting messages')
         while True:
             # download message from Twitch channel
             received = (await self.reader.read(n=2048)).strip().decode('utf-8')

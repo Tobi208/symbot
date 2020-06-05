@@ -30,12 +30,12 @@ class Environment:
 
         # load environment from data folder
         try:
+            logging.info('loading environment')
             with open(self.file_path) as file:
                 self.environment = json.load(file)
-            logging.info('loaded environment')
         # or start a fresh environment
         except FileNotFoundError:
-            logging.info(f'no environment data found in {self.file_path}')
+            logging.info(f'no environment found in {self.file_path}')
             self.environment = {}
             logging.info('created new environment')
 

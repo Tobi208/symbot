@@ -37,12 +37,12 @@ class Permissions:
 
         # load permissions from data folder
         try:
+            logging.info('loading permissions')
             with open(self.file_path) as file:
                 self.permissions = json.load(file)
-            logging.info('loaded permissions')
         # or start a fresh environment
         except FileNotFoundError:
-            logging.info(f'no permissions data found in {self.file_path}')
+            logging.info(f'no permissions found in {self.file_path}')
             self.permissions = {}
             logging.info('created new permissions')
 
