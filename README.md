@@ -16,11 +16,7 @@ python twitch chat bot
 
 ## todo
 - media usage
-- move command permission levels to data
-- move command cooldowns to data
 - meta commands
-- logging
-- make code robust error resistant
 - enable/disable commands
 - track command usage with new aux controller
 - filter messages with blacklist
