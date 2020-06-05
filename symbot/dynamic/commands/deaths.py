@@ -1,3 +1,5 @@
+import logging
+
 from symbot.chat.message import Message
 from symbot.dynamic.commands._base_command import BaseCommand
 from symbot.control.control import Control
@@ -11,7 +13,18 @@ class Command(BaseCommand):
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
-        broadcaster = self.control.environment.get('broadcaster')
-        deaths = self.control.environment.get('deaths')
+
+        try:
+            broadcaster = self.control.environment.get('broadcaster')
+        except KeyError:
+            logging.info(f'({self.name}) unable to find var (broadcaster)')
+            return
+        try:
+            deaths = self.control.environment.get('deaths')
+        except KeyError:
+            logging.info(f'({self.name}) unable to find var (deaths)')
+            return
+
         response = f'{broadcaster} has died {deaths} times :('
         await self.control.respond(response)
+        logging.info(f'({self.name}) successfully generated response')

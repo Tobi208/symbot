@@ -13,3 +13,4 @@ class Command(BaseCommand):
     async def run(self, msg: Message):
         response = f'weil halt'
         await self.control.respond(response)
+        logging.info(f'({self.name}) successfully generated response')

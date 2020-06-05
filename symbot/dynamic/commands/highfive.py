@@ -1,3 +1,5 @@
+import logging
+
 from symbot.chat.message import Message
 from symbot.dynamic.commands._base_command import BaseCommand
 from symbot.control.control import Control
@@ -11,5 +13,13 @@ class Command(BaseCommand):
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
-        response = msg.user + ' hat ' + msg.context[0] + ' ein highfive gegeben'
+
+        try:
+            recipient = msg.context[0]
+        except IndexError:
+            logging.info(f'({self.name}) missing context (recipient)')
+            return
+
+        response = f'{msg.user} hat {recipient} ein highfive gegeben'
         await self.control.respond(response)
+        logging.info(f'({self.name}) successfully generated response')
