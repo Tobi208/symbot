@@ -49,14 +49,11 @@ class Control:
 
         # dynamically load in commands
         self.commands = {}
-        # MAYBE make path dynamic
         logging.info('loading user commands')
         for file in os.listdir(f'dev{os.sep}commands'):
             # exclude files not meant to be loaded
             if not file.startswith('_'):
-                # MAYBE make package dynamic
-                module = import_module(f'symbot.dev.commands.{file[:-3]}')
-                command = module.Command(self)
+                command = import_module(f'symbot.dev.commands.{file[:-3]}').Command(self)
                 self.commands[command.name] = command
 
         # auxiliary controllers
@@ -125,17 +122,17 @@ class Control:
             # check for existence
             if not command:
                 continue
+            # check if command is enabled
+            if not command.enabled:
+                logging.info(f'{command.name} is disabled')
+                continue
             # check for permission
             if not self.permissions.check(command.permission_level, msg.user):
-                logging.info(
-                    f'({msg.user})'
-                    f' has insufficient permission to call '
-                    f'({command.name})'
-                )
+                logging.info(f'{msg.user} has insufficient permission to call {command.name}')
                 continue
             # check for cooldown
             if self.cooldowns.has_cooldown(command, msg.timestamp):
-                logging.info(f'({command.name}) is still on cooldown')
+                logging.info(f'{command.name} is still on cooldown')
                 continue
             # command is safe to execute
             # append command to asyncio loop
