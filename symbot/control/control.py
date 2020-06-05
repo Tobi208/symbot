@@ -27,7 +27,7 @@ class Control:
     settings : Settings
         overrides default command settings
     commands : list
-        list of all commands loaded dynamically
+        dict of all commands loaded dynamically
     msg_queue : Queue
         thread safe queue to receive Twitch messages
     resp_queue : Queue
@@ -48,7 +48,7 @@ class Control:
     def __init__(self):
 
         # dynamically load in commands
-        self.commands = []
+        self.commands = {}
         # MAYBE make path dynamic
         logging.info('loading user commands')
         for file in os.listdir(f'dev{os.sep}commands'):
@@ -56,7 +56,8 @@ class Control:
             if not file.startswith('_'):
                 # MAYBE make package dynamic
                 module = import_module(f'symbot.dev.commands.{file[:-3]}')
-                self.commands.append(module.Command(self))
+                command = module.Command(self)
+                self.commands[command.name] = command
 
         # auxiliary controllers
         self.permissions = Permissions()
@@ -68,12 +69,12 @@ class Control:
         self.msg_queue = None
         self.resp_queue = asyncio.Queue()
 
-    def get_command(self, name):
+    def get_command(self, cmd_name):
         """try to find command by name
 
         Parameters
         ----------
-        name : str
+        cmd_name : str
             command identifier
 
         Returns
@@ -82,10 +83,9 @@ class Control:
             desired command, or None if not found
         """
 
-        for command in self.commands:
-            if name == command.name:
-                return command
-        return None
+        if cmd_name not in self.commands:
+            return None
+        return self.commands[cmd_name]
 
     async def requeue(self, msg):
         """push message back to message queue
