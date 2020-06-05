@@ -1,5 +1,5 @@
-import logging
 import json
+import logging
 import os
 
 from symbot.util.updater import update_json

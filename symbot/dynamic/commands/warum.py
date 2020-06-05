@@ -1,6 +1,6 @@
 from symbot.chat.message import Message
-from symbot.dynamic.commands._base_command import BaseCommand
 from symbot.control.control import Control
+from symbot.dynamic.commands._base_command import BaseCommand
 
 
 class Command(BaseCommand):
