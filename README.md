@@ -16,10 +16,34 @@ python twitch chat bot
 
 ## todo
 - media usage
-- document command descriptions and hints in readme
+- move command permission levels to data
 - meta commands
 - logging
 - make code robust error resistant
-- enable/disable certain commands
+- enable/disable commands
 - track command usage with new aux controller
 - filter messages with blacklist
+- cleanup environment unused vars
+
+## command ideas
+- local time
+- uptime
+- addcom
+- editcom
+- delcom
+- getvar
+- setvar
+- permit
+- setperm
+- purge
+- enable
+- disable
+
+## media ideas
+- songrequest
+- deathcounter
+- tts
+- play sound
+- play video
+- poll
+- time/date
