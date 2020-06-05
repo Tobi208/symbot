@@ -84,7 +84,7 @@ class Permissions:
             user_level = self.permissions[user]
         else:
             # or use default permission level
-            # MAYBE enable dynamic user levels from config
+            # MAYBE enable dev user levels from config
             # MAYBE use enumerate?
             user_level = 3
         return user_level <= cmd_level
