@@ -22,6 +22,8 @@ class BaseCommand(ABC):
         permission level of command (default: public)
     cooldown : float
         minimum seconds between command calls (default: 0)
+    enabled : bool
+        command is enabled
 
     Methods
     -------
@@ -35,6 +37,7 @@ class BaseCommand(ABC):
         self.author = ''
         self.permission_level = 3
         self.cooldown = 0
+        self.enabled = True
 
     @abstractmethod
     async def run(self, msg: Message):
