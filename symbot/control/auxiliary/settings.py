@@ -46,6 +46,7 @@ class Settings:
     def override(self):
         """override default settings from devs with user settings"""
 
+        logging.info('overriding default command settings with user settings')
         # for each cmd_name, look up its settings
         for cmd_name, setting in self.settings.items():
             # and override the command attr for each altered attr
@@ -70,13 +71,14 @@ class Settings:
         try:
             cmd_attr = command.__getattribute__(attr)
             # enforce that val has to be same type as cmd_attr
-            if cmd_attr is val:
+            if type(cmd_attr) == type(val):
                 # set attribute to val
                 command.__setattr__(attr, val)
             else:
                 logging.info(f'{cmd_name} unable to set '
                              f'{attr}, because '
-                             f'{val} is not of type '
+                             f'{val} is of type '
+                             f'{type(val)} instead of type'
                              f'{type(cmd_attr)}')
         except AttributeError:
             logging.info(f'{cmd_name} unable to set '
