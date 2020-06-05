@@ -1,4 +1,5 @@
 import asyncio
+import logging
 
 from symbot.chat.message import Message
 from symbot.config import *
@@ -43,12 +44,14 @@ class Chat:
 
         # obtain reader, writer streams by connecting to server
         self.reader, self.writer = await asyncio.open_connection(host=server, port=port)
+        logging.info('connected to server')
         # log into channel with credentials
         self.writer.write(f'PASS {token}\r\nNICK {nick}\r\nJOIN #{channel}\r\n'.encode('utf-8'))
         await self.writer.drain()
+        logging.info('logged in')
         # drain welcome message from reader
-        welcome_msg = await self.reader.readuntil(separator='list\r\n'.encode('utf-8'))
-        print(welcome_msg.decode('utf-8'))  # DEBUG
+        await self.reader.readuntil(separator='list\r\n'.encode('utf-8'))
+        logging.info('received welcome message')
 
     async def read(self):
         """continuously download messages from Twitch channel"""
