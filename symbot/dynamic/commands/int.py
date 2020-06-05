@@ -31,4 +31,3 @@ class Command(BaseCommand):
 
         response = f'{broadcaster} hat schon {bad} mal den turbo int rausgehauen'
         await self.control.respond(response)
-        logging.info(f'({self.name}) successfully generated response')

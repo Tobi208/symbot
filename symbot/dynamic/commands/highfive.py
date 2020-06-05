@@ -22,4 +22,3 @@ class Command(BaseCommand):
 
         response = f'{msg.user} hat {recipient} ein highfive gegeben'
         await self.control.respond(response)
-        logging.info(f'({self.name}) successfully generated response')

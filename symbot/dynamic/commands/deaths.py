@@ -27,4 +27,3 @@ class Command(BaseCommand):
 
         response = f'{broadcaster} has died {deaths} times :('
         await self.control.respond(response)
-        logging.info(f'({self.name}) successfully generated response')
