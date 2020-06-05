@@ -17,7 +17,7 @@ class Command(BaseCommand):
         try:
             recipient = msg.context[0]
         except IndexError:
-            logging.info(f'({self.name}) missing context (recipient)')
+            logging.info(f'{self.name} missing context recipient')
             return
 
         response = f'{msg.user} hat {recipient} ein highfive gegeben'

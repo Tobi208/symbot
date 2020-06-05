@@ -17,15 +17,15 @@ class Command(BaseCommand):
         try:
             broadcaster = self.control.environment.get('broadcaster')
         except KeyError:
-            logging.info(f'({self.name}) unable to find var (broadcaster)')
+            logging.info(f'{self.name} unable to find var broadcaster')
             return
         try:
             bad = self.control.environment.increment('bad')
         except KeyError:
-            logging.info(f'({self.name}) unable to find var (bad)')
+            logging.info(f'{self.name} unable to find var bad')
             return
         except TypeError:
-            logging.info(f'({self.name}) unable to increment var (bad)')
+            logging.info(f'{self.name} unable to increment var bad')
             return
 
         response = f'{broadcaster} hat schon {bad} mal den turbo int rausgehauen'

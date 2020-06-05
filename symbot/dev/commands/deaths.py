@@ -17,12 +17,12 @@ class Command(BaseCommand):
         try:
             broadcaster = self.control.environment.get('broadcaster')
         except KeyError:
-            logging.info(f'({self.name}) unable to find var (broadcaster)')
+            logging.info(f'{self.name} unable to find var broadcaster')
             return
         try:
             deaths = self.control.environment.get('deaths')
         except KeyError:
-            logging.info(f'({self.name}) unable to find var (deaths)')
+            logging.info(f'{self.name} unable to find var deaths')
             return
 
         response = f'{broadcaster} has died {deaths} times :('
