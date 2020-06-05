@@ -8,7 +8,7 @@ class Settings:
 
     Attributes
     ----------
-    commands : list
+    commands : dict
         commands loaded by central control
     file_path : str
         path of datafile
@@ -19,6 +19,8 @@ class Settings:
     -------
     override
         override default settings from devs with user settings
+    set_attr
+        set an attribute of a command
     """
 
     def __init__(self, commands):
@@ -43,9 +45,14 @@ class Settings:
 
     def override(self):
         """override default settings from devs with user settings"""
-        pass
 
-    def set(self, cmd_name, attr, val):
+        # for each cmd_name, look up its settings
+        for cmd_name, setting in self.settings.items():
+            # and override the command attr for each altered attr
+            for attr, val in setting.items():
+                self.set_attr(cmd_name, attr, val)
+
+    def set_attr(self, cmd_name, attr, val):
         """set an attribute of a command
 
         Parameters
@@ -57,4 +64,21 @@ class Settings:
         val : object
             value to be assigned
         """
-        pass
+
+        command = self.commands[cmd_name]
+
+        try:
+            cmd_attr = command.__getattribute__(attr)
+            # enforce that val has to be same type as cmd_attr
+            if cmd_attr is val:
+                # set attribute to val
+                command.__setattr__(attr, val)
+            else:
+                logging.info(f'{cmd_name} unable to set '
+                             f'{attr}, because '
+                             f'{val} is not of type '
+                             f'{type(cmd_attr)}')
+        except AttributeError:
+            logging.info(f'{cmd_name} unable to set '
+                         f'{attr}, because '
+                         f'command has no such attribute')

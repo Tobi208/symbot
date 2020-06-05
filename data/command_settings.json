@@ -1,6 +1,6 @@
 {
-  "!command": {
-    "permission_level" : 2,
+  "!commands": {
+    "permission_level" : 3,
     "cooldown": 5,
     "enabled" : "False"
   }
