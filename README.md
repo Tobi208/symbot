@@ -17,9 +17,12 @@ python twitch chat bot
 ## todo
 - media usage
 - meta commands
+- commands can be in packages
+- enable/disable packages
 - track command usage with new aux controller
 - filter messages with blacklist
 - cleanup environment unused vars
+- proper user interface
 
 ## command ideas
 - local time
