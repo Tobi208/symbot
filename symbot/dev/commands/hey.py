@@ -11,5 +11,8 @@ class Command(BaseCommand):
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
-        response = f'Hey there, {msg.user} HeyGuys'
+
+        recipient = msg.user
+
+        response = f'Hey there, {recipient} HeyGuys'
         await self.control.respond(response)

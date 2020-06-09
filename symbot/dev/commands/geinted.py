@@ -11,5 +11,7 @@ class Command(BaseCommand):
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
+
         msg.command = '!int'
+
         await self.control.requeue(msg)
