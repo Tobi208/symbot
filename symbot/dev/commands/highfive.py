@@ -19,6 +19,7 @@ class Command(BaseCommand):
         except IndexError:
             logging.info(f'{self.name} missing context recipient')
             return
+        user = msg.user
 
-        response = f'{msg.user} hat {recipient} ein highfive gegeben'
+        response = f'{user} hat {recipient} ein highfive gegeben'
         await self.control.respond(response)
