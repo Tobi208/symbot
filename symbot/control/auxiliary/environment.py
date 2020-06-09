@@ -19,6 +19,8 @@ class Environment:
         get the value of a variable
     set
         set the value of a variable
+    initiate
+        initiate new variable as 0 if it doesn't exist yet
     increment
         increment the value of a variable
     """
@@ -75,6 +77,18 @@ class Environment:
         self.environment[var] = val
         update_json(self.environment, self.file_path)
         return val
+
+    def initialize(self, var):
+        """initiate new variable as 0 if it doesn't exist yet
+
+        Parameters
+        ----------
+        var : str
+            variable to be initiated
+        """
+
+        if var not in self.environment:
+            self.set(var, 0)
 
     def increment(self, var):
         """increment the value of a variable
