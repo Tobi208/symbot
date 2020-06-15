@@ -19,8 +19,8 @@ class Environment:
         get the value of a variable
     set
         set the value of a variable
-    initiate
-        initiate new variable as 0 if it doesn't exist yet
+    initialize
+        initialize new variable as 0 if it doesn't exist yet
     increment
         increment the value of a variable
     """
@@ -79,7 +79,7 @@ class Environment:
         return val
 
     def initialize(self, var):
-        """initiate new variable as 0 if it doesn't exist yet
+        """initialize new variable as 0 if it doesn't exist yet
 
         Parameters
         ----------
