@@ -113,6 +113,12 @@ class Control:
         generates a response.
         """
 
+        # from symbot.dev.meta.command import Command
+        # from symbot.chat.message import Message
+        # m = Message('bruh:bruh!bruh@bruh.tmi.twitch.tv PRIVMSG #fd_symbicort :!command add !ded $v{broadcaster} ist schon $c{deaths} mal brutalst verreckt -cd=5')
+        # c = Command(self)
+        # await c.run(m)
+
         # run forever
         while True:
             # wait for message to process
