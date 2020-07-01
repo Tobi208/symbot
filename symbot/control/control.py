@@ -14,7 +14,7 @@ class Control:
 
     Controller communicates between Twitch chat, various data files,
     media elements and command calls & responses. Dynamically loads
-    commands from control.commands and utilizes auxiliary controllers.
+    commands from dev and utilizes auxiliary controllers.
 
     Attributes
     ----------
@@ -35,6 +35,8 @@ class Control:
 
     Methods
     -------
+    import_commands
+        recursively import and instantiate all commands in a directory
     get_command
         try to find command by name
     requeue
@@ -49,12 +51,9 @@ class Control:
 
         # dynamically load in commands
         self.commands = {}
-        logging.info('loading user commands')
-        for file in os.listdir(f'dev{os.sep}commands'):
-            # exclude files not meant to be loaded
-            if not file.startswith('_'):
-                command = import_module(f'symbot.dev.commands.{file[:-3]}').Command(self)
-                self.commands[command.name] = command
+        logging.info('loading commands')
+        self.import_commands(f'dev{os.sep}commands')
+        self.import_commands(f'dev{os.sep}meta')
 
         # auxiliary controllers
         self.permissions = Permissions()
@@ -65,6 +64,29 @@ class Control:
         # async data structures
         self.msg_queue = None
         self.resp_queue = asyncio.Queue()
+
+    def import_commands(self, path):
+        """recursively import and instantiate all commands in a directory
+
+        Parameters
+        ----------
+        path : str
+            current directory of modules to be imported
+        """
+
+        for file in os.listdir(path):
+            # exclude files not meant to be loaded
+            if file.startswith('_'):
+                continue
+            # import .py modules
+            elif file.endswith('.py'):
+                package = '.'.join(path.split(os.sep))
+                command = import_module(f'symbot.{package}.{file[:-3]}').Command(self)
+                if command.name not in self.commands:
+                    self.commands[command.name] = command
+            # import modules from lower levels recursively
+            else:
+                self.import_commands(path + os.sep + file)
 
     def get_command(self, cmd_name):
         """try to find command by name
