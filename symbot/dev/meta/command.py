@@ -97,7 +97,7 @@ class Command(BaseMetaCommand):
             else:
                 skeleton['r'].append(s)
 
-        self.builder.build_command(skeleton)
+        self.builder.create_command(skeleton)
 
     async def editcom(self, msg):
         pass

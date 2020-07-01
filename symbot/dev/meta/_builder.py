@@ -1,3 +1,7 @@
+import os
+import re
+
+from symbot.util import updater
 from symbot.util.strings import stringify
 
 
@@ -11,32 +15,26 @@ class Builder:
     def __init__(self, control):
         self.control = control
 
-    def build_command(self, skeleton):
-        print(self.assemble(skeleton))
+    def create_command(self, skeleton):
+        code = self.assemble(skeleton)
+        file_name = re.search(r'\w+', skeleton['settings']['name']).group(0)
+        updater.write_file(code, f'dev{os.sep}commands{os.sep}new{os.sep}{file_name}.py')
 
     def assemble(self, skeleton):
 
         # header always the same
-        code = """import logging
-            
-            from symbot.chat.message import Message
-            from symbot.control.control import Control
-            from symbot.dev.commands._base_command import BaseCommand
-            
-            class Command(BaseCommand):
-            
-                def __init__(self, control: Control):
-                    super().__init__(control)"""
-
-        # skeleton = {
-        #     'r': [],
-        #     'v': [],
-        #     'c': [],
-        #     'a': [],
-        #     'u': [],
-        #     'alias': [],
-        #     'settings': {'name': stringify(name), 'author': stringify(msg.user)}
-        # }
+        code =  \
+            'import logging\n' \
+            '\n' \
+            'from symbot.chat.message import Message\n' \
+            'from symbot.control.control import Control\n' \
+            'from symbot.dev.commands._base_command import BaseCommand\n' \
+            '\n' \
+            '\n' \
+            'class Command(BaseCommand):\n' \
+            '\n' \
+            '    def __init__(self, control: Control):\n' \
+            '        super().__init__(control)\n'
 
         # override default settings
         for setting, value in skeleton['settings'].items():
@@ -100,10 +98,10 @@ class Builder:
                 f'        {user} = msg.user\n'
 
         # generate response
-        response = ''.join(skeleton['r'])
+        response = ' '.join(skeleton['r'])
         code += \
             '\n' \
-            f'        response = f\'{response}\n'
+            f'        response = f\'{response}\'\n'
 
         # respond to control
         code += \
