@@ -17,17 +17,16 @@ class Builder:
     def assemble(self, skeleton):
 
         # header always the same
-        code = \
-            'import logging\n' \
-            '\n' \
-            'from symbot.chat.message import Message\n' \
-            'from symbot.control.control import Control\n' \
-            'from symbot.dev.commands._base_command import BaseCommand\n' \
-            '\n' \
-            'class Command(BaseCommand):\n' \
-            '\n' \
-            '    def __init__(self, control: Control):\n' \
-            '        super().__init__(control)\n'
+        code = """import logging
+            
+            from symbot.chat.message import Message
+            from symbot.control.control import Control
+            from symbot.dev.commands._base_command import BaseCommand
+            
+            class Command(BaseCommand):
+            
+                def __init__(self, control: Control):
+                    super().__init__(control)"""
 
         # skeleton = {
         #     'r': [],
