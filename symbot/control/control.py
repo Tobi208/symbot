@@ -74,12 +74,14 @@ class Control:
             current directory of modules to be imported
         """
 
+        splits = path.split(os.sep)
+        file = splits[-1]
         # exclude files not meant to be imported as command
-        if path.startswith('_'):
+        if file.startswith('_'):
             return
         # import .py module
-        elif path.endswith('.py'):
-            module = '.'.join(path.split(os.sep))[:-3]
+        elif file.endswith('.py'):
+            module = '.'.join(splits)[:-3]
             command = import_module(f'symbot.{module}').Command(self)
             self.commands[command.name] = command
         # import package
@@ -134,12 +136,6 @@ class Control:
         various flags before executing a command. Not every command
         generates a response.
         """
-
-        # from symbot.dev.meta.command import Command
-        # from symbot.chat.message import Message
-        # m = Message('bruh:bruh!bruh@bruh.tmi.twitch.tv PRIVMSG #fd_symbicort :!command add !ded $v{broadcaster} ist schon $c{deaths} mal brutalst verreckt -cd=5')
-        # c = Command(self)
-        # await c.run(m)
 
         # run forever
         while True:
