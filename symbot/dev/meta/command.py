@@ -37,7 +37,15 @@ class Command(BaseMetaCommand):
             logging.info(f'!command encountered an undefined operation argument {operation}')
 
     async def addcom(self, msg):
+        """add a new command
 
+        Parameters
+        ----------
+        msg : Message
+            user message trying to add a new command
+        """
+
+        # extract command name
         try:
             name = msg.context[1]
         except IndexError:
@@ -51,6 +59,43 @@ class Command(BaseMetaCommand):
         except IndexError:
             logging.info(f'!command add {name} missing content')
             return
+
+        # create command as file and load it
+        self.builder.create_command(self.skellify(msg, name))
+
+    async def editcom(self, msg):
+        pass
+
+    async def delcom(self, msg):
+        """delete a command
+
+        Parameters
+        ----------
+        msg : Message
+            message containing command to be deleted
+        """
+
+        # extract command name
+        try:
+            name = msg.context[1]
+        except IndexError:
+            logging.info('!command del missing command name argument')
+            return
+        if not self.control.get_command(name):
+            logging.info(f'!command del {name} does not exists')
+            return
+        pass
+
+    def skellify(self, msg, name):
+        """parse message to blueprint of a command
+
+        Parameters
+        ----------
+        msg : Message
+            message to be parsed
+        name : str
+            command name
+        """
 
         skeleton = {
             'r': [],
@@ -97,14 +142,7 @@ class Command(BaseMetaCommand):
             else:
                 skeleton['r'].append(s)
 
-        self.builder.create_command(skeleton)
-
-    async def editcom(self, msg):
-        pass
-
-    async def delcom(self, msg):
-        pass
-
+        return skeleton
 
 # !commands:
 #     !command add !commands https://github.com/tobi208/symbot#commands
