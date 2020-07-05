@@ -6,21 +6,45 @@ from symbot.util.strings import stringify
 
 
 class Builder:
-    """
+    """ Builder to assemble or reassemble commands, write files and load them
 
-
-
+    Methods
+    -------
+    create_command
+        creates command from a skeleton as file and loads it
+    assemble
+        assembles command code from skeleton
     """
 
     def __init__(self, control):
         self.control = control
 
     def create_command(self, skeleton):
+        """creates command from a skeleton as file and loads it
+
+        Parameters
+        ----------
+        skeleton : dict
+            blueprint containing all information about the command
+        """
+
+        # assemble command
         code = self.assemble(skeleton)
         file_name = re.search(r'\w+', skeleton['settings']['name']).group(0)
-        updater.write_file(code, f'dev{os.sep}commands{os.sep}new{os.sep}{file_name}.py')
+        file_path = f'dev{os.sep}commands{os.sep}new{os.sep}{file_name}.py'
+        # write file
+        updater.write_file(code, file_path)
+        # load command
+        self.control.import_command(file_path)
 
     def assemble(self, skeleton):
+        """assembles command code from skeleton
+
+        Parameters
+        ----------
+        skeleton : dict
+            blueprint containing all information about the command
+        """
 
         # header always the same
         code =  \

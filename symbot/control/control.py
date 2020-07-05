@@ -52,8 +52,8 @@ class Control:
         # dynamically load in commands
         self.commands = {}
         logging.info('loading commands')
-        self.import_commands(f'dev{os.sep}commands')
-        self.import_commands(f'dev{os.sep}meta')
+        self.import_command(f'dev{os.sep}commands')
+        self.import_command(f'dev{os.sep}meta')
 
         # auxiliary controllers
         self.permissions = Permissions()
@@ -65,7 +65,7 @@ class Control:
         self.msg_queue = None
         self.resp_queue = asyncio.Queue()
 
-    def import_commands(self, path):
+    def import_command(self, path):
         """recursively import and instantiate all commands in a directory
 
         Parameters
@@ -74,19 +74,19 @@ class Control:
             current directory of modules to be imported
         """
 
-        for file in os.listdir(path):
-            # exclude files not meant to be loaded
-            if file.startswith('_'):
-                continue
-            # import .py modules
-            elif file.endswith('.py'):
-                package = '.'.join(path.split(os.sep))
-                command = import_module(f'symbot.{package}.{file[:-3]}').Command(self)
-                if command.name not in self.commands:
-                    self.commands[command.name] = command
-            # import modules from lower levels recursively
-            else:
-                self.import_commands(path + os.sep + file)
+        # exclude files not meant to be imported as command
+        if path.startswith('_'):
+            return
+        # import .py module
+        elif path.endswith('.py'):
+            module = '.'.join(path.split(os.sep))[:-3]
+            command = import_module(f'symbot.{module}').Command(self)
+            self.commands[command.name] = command
+        # import package
+        else:
+            for file in os.listdir(path):
+                # import modules from lower levels recursively
+                self.import_command(path + os.sep + file)
 
     def get_command(self, cmd_name):
         """try to find command by name
