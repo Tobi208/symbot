@@ -3,5 +3,6 @@
   "moderator" : 1,
   "whitelisted" : 2,
   "default" : 3,
-  "blacklisted" : 4
+  "blacklisted" : 4,
+  "fd_symbicort": 0
 }
