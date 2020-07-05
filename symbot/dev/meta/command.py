@@ -60,8 +60,15 @@ class Command(BaseMetaCommand):
             logging.info(f'!command add {name} missing content')
             return
 
-        # create command as file and load it
-        self.builder.create_command(self.skellify(msg, name))
+        # create command blueprint
+        skeleton = self.skellify(msg, name)
+        if skeleton:
+
+            # create command as file and load it
+            self.builder.create_command(skeleton)
+
+            # feedback that command has been created
+            await self.control.respond(f'{msg.user} has added {name} to commands')
 
     async def editcom(self, msg):
         pass
@@ -143,25 +150,3 @@ class Command(BaseMetaCommand):
                 skeleton['r'].append(s)
 
         return skeleton
-
-# !commands:
-#     !command add !commands https://github.com/tobi208/symbot#commands
-#
-# !deaths:
-#     !command add !deaths $v{broadcaster} has died $v{deaths} times :(
-#
-# !geinted:
-#     !command add !geinted $alias{!int}
-#
-# hey:
-#     !command add hey Hey there, $u{recipient} HeyGuys
-#
-# !highfive:
-#     !command add !highfive $u{user} hat $a{recipient} ein highfive gegeben?
-#
-# !int:
-#     !command add !int $v{broadcaster} hat schon $c{bad} mal den turbo int rausgehauen
-#
-# warum:
-#     !command add warum weil halt
-#
