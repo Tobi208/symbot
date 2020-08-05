@@ -9,6 +9,27 @@ from symbot.util.strings import stringify
 
 
 class Command(BaseMetaCommand):
+    """Central meta command
+
+    Add, Edit or Delete commands and their files with !command
+
+    Methods
+    -------
+    run
+        execute when !command is called
+    addcom
+        add a new command
+    editcom
+        edit a command
+    delcom
+        delete a command
+    get_file
+        retrieve absolute path of module containing command
+    skellify_message
+        parse message to blueprint of a command
+    skellify_command
+        parse command to blueprint of a command
+    """
 
     def __init__(self, control):
         super().__init__(control)
@@ -62,7 +83,7 @@ class Command(BaseMetaCommand):
             return
 
         # create command blueprint
-        skeleton = self.skellify(msg, name, 'add')
+        skeleton = self.skellify_message(msg, name, 'add')
         if skeleton:
 
             # create command as file and load it
@@ -103,10 +124,25 @@ class Command(BaseMetaCommand):
             del self.control.commands[name]
 
             # delete command file
-            file = os.getcwd() + os.sep + os.sep.join(command.__module__.split('.')[1:]) + '.py'
-            os.remove(file)
+            os.remove(self.get_file(command))
 
-    def skellify(self, msg, name, operation):
+    def get_file(self, command):
+        """retrieve absolute path of module containing command
+
+        Parameters
+        ----------
+        command : Command
+            command
+
+        Returns
+        -------
+        str
+            absolute path of module containing command
+        """
+
+        return os.getcwd() + os.sep + os.sep.join(command.__module__.split('.')[1:]) + '.py'
+
+    def skellify_message(self, msg, name, operation):
         """parse message to blueprint of a command
 
         Parameters
@@ -117,6 +153,11 @@ class Command(BaseMetaCommand):
             command name
         operation : str
             command operation for logging
+
+        Returns
+        -------
+        dict
+            blueprint of a command
         """
 
         skeleton = {
@@ -165,3 +206,19 @@ class Command(BaseMetaCommand):
                 skeleton['r'].append(s)
 
         return skeleton
+
+    def skellify_command(self, path):
+        """parse command to blueprint of a command
+
+        Parameters
+        ----------
+        path : str
+            absolute path of module containing command
+
+        Returns
+        -------
+        dict
+            blueprint of a command
+        """
+
+        pass
