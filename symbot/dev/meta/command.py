@@ -160,19 +160,30 @@ class Command(BaseMetaCommand):
             blueprint of a command
         """
 
+        # blueprint container
         skeleton = {
+            # response
             'r': [],
+            # variables
             'v': [],
+            # counters
             'c': [],
+            # arguments
             'a': [],
+            # user
             'u': [],
+            # alias
             'alias': [],
+            # settings
             'settings': {'name': stringify(name), 'author': stringify(msg.user)}
         }
 
+        # start parsing after command name
         for s in msg.context[2:]:
+            # $ indicates special item
             if s.startswith('$'):
                 try:
+                    # extract special item
                     arg, value = self.arg_extractor.search(s).groups()
                     skeleton[arg].append(value)
                     skeleton['r'].append('{' + value + '}')
@@ -182,8 +193,10 @@ class Command(BaseMetaCommand):
                 except KeyError:
                     logging.info(f'!command {operation} {name} encountered undefined argument')
                     return
+            # - indicates setting
             elif s.startswith('-'):
                 try:
+                    # extract setting
                     setting, value = self.setting_extractor.search(s).groups()
                     if setting == 'ul':
                         skeleton['settings']['permission_level'] = int(value)
@@ -205,6 +218,8 @@ class Command(BaseMetaCommand):
             else:
                 skeleton['r'].append(s)
 
+        # if parsing was successful, return blueprint
+        # otherwise null was already returned
         return skeleton
 
     def skellify_command(self, path):
