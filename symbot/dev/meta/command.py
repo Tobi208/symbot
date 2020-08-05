@@ -38,8 +38,22 @@ class Command(BaseMetaCommand):
 
         self.builder = Builder(control)
 
+        # message extractors
         self.arg_extractor = re.compile('\\$(.*){(.*)}')
         self.setting_extractor = re.compile('-(.*)=(.*)')
+
+        # file extractors
+        self.r_extractor = re.compile(r'response = f\'(.*)\'')
+        self.v_extractor = re.compile(r'get\(\'(\w*)\'\)')
+        self.c_extractor = re.compile(r'increment\(\'(\w*)\'\)')
+        self.a_extractor = re.compile(r' (\w*) = msg\.context\[\d\]')
+        self.u_extractor = re.compile(r' (\w*) = msg\.user')
+        self.alias_extractor = re.compile(r'msg\.command = \'(\S*)\'')
+        self.name_extractor = re.compile(r'name = (\S*)')
+        self.author_extractor = re.compile(r'author = (\S*)')
+        self.permission_level_extractor = re.compile(r'permission_level = (\S*)')
+        self.cooldown_extractor = re.compile(r'cooldown = (\S*)')
+        self.enabled_extractor = re.compile(r'enabled = (\S*)')
 
     async def run(self, msg: Message):
 
@@ -85,7 +99,6 @@ class Command(BaseMetaCommand):
         # create command blueprint
         skeleton = self.skellify_message(msg, name, 'add')
         if skeleton:
-
             # create command as file and load it
             self.builder.create_command(skeleton)
 
@@ -93,7 +106,11 @@ class Command(BaseMetaCommand):
             await self.control.respond(f'{msg.user} has added {name} to commands')
 
     async def editcom(self, msg):
-        pass
+        command = self.control.get_command(msg.context[1])
+        skeleton = self.skellify_command(self.get_file(command))
+
+        for k, v in skeleton.items():
+            print(v)
 
     async def delcom(self, msg):
         """delete a command
@@ -119,7 +136,6 @@ class Command(BaseMetaCommand):
         # MAYBE increase security
         if self.control.permissions.check_meta(command.permission_level, msg.user) \
                 or command.author == msg.user:
-
             # delete command from control
             del self.control.commands[name]
 
@@ -236,4 +252,44 @@ class Command(BaseMetaCommand):
             blueprint of a command
         """
 
-        pass
+        with open(path, 'r') as f:
+            code = f.read()
+
+        skeleton = {}
+
+        response = self.r_extractor.findall(code)
+        if response:
+            skeleton['r'] = response[0].split(' ')
+        else:
+            skeleton['r'] = []
+
+        # variables
+        skeleton['v'] = self.v_extractor.findall(code)
+        # counters
+        skeleton['c'] = self.c_extractor.findall(code)
+        # arguments
+        skeleton['a'] = self.a_extractor.findall(code)
+        # user
+        skeleton['u'] = self.u_extractor.findall(code)
+        # alias
+        skeleton['alias'] = self.alias_extractor.findall(code)
+
+        skeleton['settings'] = {}
+
+        name = self.name_extractor.findall(code)
+        if name:
+            skeleton['settings']['name'] = name[0]
+        author = self.author_extractor.findall(code)
+        if author:
+            skeleton['settings']['author'] = author[0]
+        permission_level = self.permission_level_extractor.findall(code)
+        if permission_level:
+            skeleton['settings']['permission_level'] = permission_level
+        cooldown = self.cooldown_extractor.findall(code)
+        if cooldown:
+            skeleton['settings']['cooldown'] = cooldown
+        enabled = self.enabled_extractor.findall(code)
+        if enabled:
+            skeleton['settings']['enabled'] = enabled
+
+        return skeleton
