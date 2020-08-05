@@ -1,5 +1,6 @@
 import logging
 import re
+import os
 
 from symbot.chat.message import Message
 from symbot.dev.meta._base_meta_command import BaseMetaCommand
@@ -88,12 +89,24 @@ class Command(BaseMetaCommand):
         except IndexError:
             logging.info('!command del missing command name argument')
             return
-        if not self.control.get_command(name):
+        command = self.control.get_command(name)
+        if not command:
             logging.info(f'!command del {name} does not exists')
             return
-        pass
 
-    def skellify(self, msg, name, op):
+        # check for safety conditions
+        # MAYBE increase security
+        if self.control.permissions.check_meta(command.permission_level, msg.user) \
+                or command.author == msg.user:
+
+            # delete command from control
+            del self.control.commands[name]
+
+            # delete command file
+            file = os.getcwd() + os.sep + os.sep.join(command.__module__.split('.')[1:]) + '.py'
+            os.remove(file)
+
+    def skellify(self, msg, name, operation):
         """parse message to blueprint of a command
 
         Parameters
@@ -102,7 +115,7 @@ class Command(BaseMetaCommand):
             message to be parsed
         name : str
             command name
-        op : str
+        operation : str
             command operation for logging
         """
 
@@ -123,10 +136,10 @@ class Command(BaseMetaCommand):
                     skeleton[arg].append(value)
                     skeleton['r'].append('{' + value + '}')
                 except AttributeError:
-                    logging.info(f'!command {op} {name} has bad argument')
+                    logging.info(f'!command {operation} {name} has bad argument')
                     return
                 except KeyError:
-                    logging.info(f'!command {op} {name} encountered undefined argument')
+                    logging.info(f'!command {operation} {name} encountered undefined argument')
                     return
             elif s.startswith('-'):
                 try:
@@ -140,13 +153,13 @@ class Command(BaseMetaCommand):
                     elif setting == 'on':
                         skeleton['settings']['enabled'] = value.lower() == 'true'
                     else:
-                        logging.info(f'!command {op} {name} invalid setting {setting}')
+                        logging.info(f'!command {operation} {name} invalid setting {setting}')
                         return
                 except AttributeError:
-                    logging.info(f'!command {op} {name} has bad setting')
+                    logging.info(f'!command {operation} {name} has bad setting')
                     return
                 except ValueError:
-                    logging.info(f'!command {op} {name} can not convert setting value')
+                    logging.info(f'!command {operation} {name} can not convert setting value')
                     return
             else:
                 skeleton['r'].append(s)
