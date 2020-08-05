@@ -151,7 +151,7 @@ class Control:
                 logging.info(f'{command.name} is disabled')
                 continue
             # check for permission
-            if not self.permissions.check(command.permission_level, msg.user):
+            if not self.permissions.check_call(command.permission_level, msg.user):
                 logging.info(f'{msg.user} has insufficient permission to call {command.name}')
                 continue
             # check for cooldown
