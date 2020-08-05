@@ -26,8 +26,12 @@ class Permissions:
     -------
     set
         assign permission level to a user
-    check
-        determine whether user has sufficient permission
+    get
+        retrieve user permission level
+    check_call
+        determine whether user has sufficient permission to call a command
+    check_meta
+        determine whether user has sufficient permission to modify a command
     """
 
     def __init__(self):
@@ -63,8 +67,31 @@ class Permissions:
             self.permissions[user] = level
         update_json(self.permissions, self.file_path)
 
-    def check(self, cmd_level, user):
-        """determine whether user has sufficient permission
+    def get(self, user):
+        """retrieve user permission level
+
+        Parameters
+        ----------
+        user : str
+            user identifier
+
+        Returns
+        -------
+        int
+            user permission level
+        """
+
+        if user in self.permissions:
+            # get user level from data
+            return self.permissions[user]
+        else:
+            # or use default permission level
+            # MAYBE enable dev user levels from config
+            # MAYBE use enumerate?
+            return 3
+
+    def check_call(self, cmd_level, user):
+        """determine whether user has sufficient permission to call a command
 
         Parameters
         ----------
@@ -79,12 +106,22 @@ class Permissions:
             user has sufficient permission
         """
 
-        if user in self.permissions:
-            # get user level from data
-            user_level = self.permissions[user]
-        else:
-            # or use default permission level
-            # MAYBE enable dev user levels from config
-            # MAYBE use enumerate?
-            user_level = 3
-        return user_level <= cmd_level
+        return self.get(user) <= cmd_level
+
+    def check_meta(self, cmd_level, user):
+        """determine whether user has sufficient permission to modify a command
+
+        Parameters
+        ----------
+        cmd_level : int
+            minimum permission level required by command
+        user : str
+            user name
+
+        Returns
+        -------
+        bool
+            user has sufficient permission
+        """
+
+        return self.get(user) < cmd_level
