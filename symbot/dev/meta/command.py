@@ -61,7 +61,7 @@ class Command(BaseMetaCommand):
             return
 
         # create command blueprint
-        skeleton = self.skellify(msg, name)
+        skeleton = self.skellify(msg, name, 'add')
         if skeleton:
 
             # create command as file and load it
@@ -93,7 +93,7 @@ class Command(BaseMetaCommand):
             return
         pass
 
-    def skellify(self, msg, name):
+    def skellify(self, msg, name, op):
         """parse message to blueprint of a command
 
         Parameters
@@ -102,6 +102,8 @@ class Command(BaseMetaCommand):
             message to be parsed
         name : str
             command name
+        op : str
+            command operation for logging
         """
 
         skeleton = {
@@ -121,10 +123,10 @@ class Command(BaseMetaCommand):
                     skeleton[arg].append(value)
                     skeleton['r'].append('{' + value + '}')
                 except AttributeError:
-                    logging.info(f'!command add {name} has bad argument')
+                    logging.info(f'!command {op} {name} has bad argument')
                     return
                 except KeyError:
-                    logging.info(f'!command add {name} encountered undefined argument')
+                    logging.info(f'!command {op} {name} encountered undefined argument')
                     return
             elif s.startswith('-'):
                 try:
@@ -138,13 +140,13 @@ class Command(BaseMetaCommand):
                     elif setting == 'on':
                         skeleton['settings']['enabled'] = value.lower() == 'true'
                     else:
-                        logging.info(f'!command add {name} invalid setting {setting}')
+                        logging.info(f'!command {op} {name} invalid setting {setting}')
                         return
                 except AttributeError:
-                    logging.info(f'!command add {name} has bad setting')
+                    logging.info(f'!command {op} {name} has bad setting')
                     return
                 except ValueError:
-                    logging.info(f'!command add {name} can not convert setting value')
+                    logging.info(f'!command {op} {name} can not convert setting value')
                     return
             else:
                 skeleton['r'].append(s)
