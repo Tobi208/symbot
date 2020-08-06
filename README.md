@@ -28,13 +28,7 @@ python twitch chat bot
 ## command ideas
 - local time
 - uptime
-- getvar
-- setvar
-- permit
-- setperm
 - purge
-- enable
-- disable
 
 ## media ideas
 - songrequest
