@@ -12,6 +12,10 @@ class Builder:
     -------
     create_command
         creates command from a skeleton as file and loads it
+    edit_command
+        recreates command from a skeleton as file and reloads it
+    delete_command
+        deletes command and unloads it
     assemble
         assembles command code from skeleton
     """
@@ -36,6 +40,43 @@ class Builder:
         updater.write_file(code, file_path)
         # load command
         self.control.import_command(file_path)
+
+    def edit_command(self, command, skeleton, path):
+        """recreates command from a skeleton as file and reloads it
+
+        Parameters
+        ----------
+        command : Command
+            command to be edited
+        skeleton : dict
+            blueprint containing all information about the command
+        path : str
+            file path of module containing command
+        """
+
+        # assemble command
+        code = self.assemble(skeleton)
+        # rewrite file
+        updater.write_file(code, path)
+        # reload command
+        self.control.delete_command(command)
+        self.control.import_command(path)
+
+    def delete_command(self, command, path):
+        """deletes command and unloads it
+
+        Parameters
+        ----------
+        command : Command
+            command to be deleted
+        path : str
+            file path of module containing command
+        """
+
+        # delete file
+        updater.delete_file(path)
+        # unload command
+        self.control.delete_command(command)
 
     def assemble(self, skeleton):
         """assembles command code from skeleton
