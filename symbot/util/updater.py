@@ -1,4 +1,5 @@
 import json
+import os
 
 """Utility to update files when data changes
 
@@ -11,6 +12,8 @@ update_json
     update json file with data from dictionary
 write_file
     write file
+delete_file
+    delete file
 """
 
 
@@ -41,3 +44,15 @@ def write_file(content, file_path):
     """
     with open(file_path, 'w') as file:
         file.write(content)
+
+
+def delete_file(file):
+    """delete file
+
+    Parameters
+    ----------
+    file : str
+        file to be deleted
+    """
+
+    os.remove(file)
