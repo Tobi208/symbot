@@ -24,7 +24,7 @@ class Command(BaseMetaCommand):
     delcom
         delete a command
     get_file
-        retrieve absolute path of module containing command
+        retrieve path of module containing command
     skellify_message
         parse message to blueprint of a command
     skellify_command
@@ -99,18 +99,61 @@ class Command(BaseMetaCommand):
         # create command blueprint
         skeleton = self.skellify_message(msg, name, 'add')
         if skeleton:
-            # create command as file and load it
+            # create command, load it and respond
             self.builder.create_command(skeleton)
-
-            # feedback that command has been created
             await self.control.respond(f'{msg.user} has added {name} to commands')
 
     async def editcom(self, msg):
-        command = self.control.get_command(msg.context[1])
-        skeleton = self.skellify_command(self.get_file(command))
+        """edit a command
 
-        for k, v in skeleton.items():
-            print(v)
+        Parameters
+        ----------
+        msg : Message
+            user message trying to edit a command"""
+
+        # extract command name
+        try:
+            name = msg.context[1]
+        except IndexError:
+            logging.info('!command edit missing command name argument')
+            return
+        if not self.control.get_command(name):
+            logging.info(f'!command edit {name} does not exist')
+            return
+        try:
+            msg.context[2]
+        except IndexError:
+            logging.info(f'!command edit {name} missing content')
+            return
+
+        # skellify message and command
+        skeleton_message = self.skellify_message(msg, name, 'edit')
+        file = self.get_file(self.control.get_command(msg.context[1]))
+        skeleton_command = self.skellify_command(file)
+
+        # check if only settings are being edited
+        # do not change response in that case
+        only_settings = True
+        for k, v in skeleton_message.items():
+            if k != 'settings' and v:
+                only_settings = False
+                break
+
+        # overwrite settings
+        del skeleton_message['settings']['name']
+        del skeleton_message['settings']['author']
+        for setting, value in skeleton_message['settings'].items():
+            skeleton_command['settings'][setting] = value
+        del skeleton_message['settings']
+
+        # overwrite response
+        if not only_settings:
+            for k, v in skeleton_message.items():
+                skeleton_command[k] = v
+
+        # edit command, reload it and respond
+        self.builder.edit_command(self.control.get_command(name), skeleton_command, file)
+        await self.control.respond(f'{msg.user} has modified command {name}')
 
     async def delcom(self, msg):
         """delete a command
@@ -136,14 +179,13 @@ class Command(BaseMetaCommand):
         # MAYBE increase security
         if self.control.permissions.check_meta(command.permission_level, msg.user) \
                 or command.author == msg.user:
-            # delete command from control
-            del self.control.commands[name]
 
-            # delete command file
-            os.remove(self.get_file(command))
+            # delete command and respond
+            self.builder.delete_command(command, self.get_file(command))
+            await self.control.respond(f'{msg.user} has removed command {name}')
 
     def get_file(self, command):
-        """retrieve absolute path of module containing command
+        """retrieve path of module containing command
 
         Parameters
         ----------
@@ -153,10 +195,10 @@ class Command(BaseMetaCommand):
         Returns
         -------
         str
-            absolute path of module containing command
+            path of module containing command
         """
 
-        return os.getcwd() + os.sep + os.sep.join(command.__module__.split('.')[1:]) + '.py'
+        return os.sep.join(command.__module__.split('.')[1:]) + '.py'
 
     def skellify_message(self, msg, name, operation):
         """parse message to blueprint of a command
@@ -218,8 +260,6 @@ class Command(BaseMetaCommand):
                         skeleton['settings']['permission_level'] = int(value)
                     elif setting == 'cd':
                         skeleton['settings']['cooldown'] = float(value)
-                    elif setting == 'id':
-                        skeleton['settings']['name'] = value
                     elif setting == 'on':
                         skeleton['settings']['enabled'] = value.lower() == 'true'
                     else:
