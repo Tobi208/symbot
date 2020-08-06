@@ -1,7 +1,8 @@
 import asyncio
 import logging
 import os
-from importlib import import_module
+import sys
+from importlib import import_module, reload
 
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
@@ -37,6 +38,8 @@ class Control:
     -------
     import_commands
         recursively import and instantiate all commands in a directory
+    delete_command
+        delete command from dict and unload module
     get_command
         try to find command by name
     requeue
@@ -89,6 +92,18 @@ class Control:
             for file in os.listdir(path):
                 # import modules from lower levels recursively
                 self.import_command(path + os.sep + file)
+
+    def delete_command(self, command):
+        """delete command from dict and unload module
+
+        Parameters
+        ----------
+        command : Command
+            command to be deleted
+        """
+
+        del self.commands[command.name]
+        sys.modules.pop(command.__module__)
 
     def get_command(self, cmd_name):
         """try to find command by name
