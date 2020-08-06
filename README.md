@@ -16,7 +16,6 @@ python twitch chat bot
 
 ## todo
 - media usage
-- meta commands
 - commands can be in packages
 - enable/disable packages
 - track command usage with new aux controller
@@ -29,9 +28,6 @@ python twitch chat bot
 ## command ideas
 - local time
 - uptime
-- addcom
-- editcom
-- delcom
 - getvar
 - setvar
 - permit
