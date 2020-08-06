@@ -81,22 +81,24 @@ class Settings:
 
         try:
             cmd_attr = command.__getattribute__(attr)
+            # check for str to bool casting shenanigans
+            if type(cmd_attr) == bool and type(val) == str:
+                val = val.lower() == 'true'
             # enforce that val has to be same type as cmd_attr
-            if type(cmd_attr) == type(val):
-                # set attribute to val
-                command.__setattr__(attr, val)
-                return True
-            else:
-                logging.info(f'{cmd_name} unable to set '
-                             f'{attr}, because '
-                             f'{val} is of type '
-                             f'{type(val)} instead of type'
-                             f'{type(cmd_attr)}')
-                return False
+            val = (type(cmd_attr))(val)
+            command.__setattr__(attr, val)
+            return True
         except AttributeError:
             logging.info(f'{cmd_name} unable to set '
                          f'{attr}, because '
                          f'command has no such attribute')
+            return False
+        except ValueError:
+            logging.info(f'{cmd_name} unable to set '
+                         f'{attr}, because '
+                         f'{val} is of type '
+                         f'{type(val)} instead of type'
+                         f'{type(cmd_attr)}')
             return False
 
     def set(self, cmd_name, attr, val):
@@ -118,3 +120,5 @@ class Settings:
             else:
                 self.settings[cmd_name] = {attr: val}
             update_json(self.settings, self.file_path)
+            return True
+        return False
