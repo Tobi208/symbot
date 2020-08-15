@@ -23,6 +23,7 @@ python twitch chat bot
 - cleanup environment unused vars
 - proper user interface
 - escape insecure / secure escapes
+- update commands in readme
 
 ## command ideas
 - none
