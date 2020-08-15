@@ -62,19 +62,17 @@ class Builder:
         self.control.delete_command(command)
         self.control.import_command(path)
 
-    def delete_command(self, command, path):
+    def delete_command(self, command):
         """deletes command and unloads it
 
         Parameters
         ----------
         command : Command
             command to be deleted
-        path : str
-            file path of module containing command
         """
 
         # delete file
-        updater.delete_file(path)
+        updater.delete_command(command)
         # unload command
         self.control.delete_command(command)
 

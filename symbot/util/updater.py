@@ -14,6 +14,10 @@ write_file
     write file
 delete_file
     delete file
+delete_command
+    delete file containing command
+get_file_by_command
+    get file containing command
 """
 
 
@@ -56,3 +60,27 @@ def delete_file(file):
     """
 
     os.remove(file)
+
+
+def delete_command(command):
+    """delete file containing command
+
+    Parameters
+    ----------
+    command : Command
+        command contained by file to be deleted
+    """
+
+    delete_file(get_file_by_command(command))
+
+
+def get_file_by_command(command):
+    """get file containing command
+
+    Parameters
+    ----------
+    command : Command
+        command contained by file
+    """
+
+    return os.sep.join(command.__module__.split('.')[1:]) + '.py'

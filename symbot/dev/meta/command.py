@@ -5,6 +5,7 @@ import os
 from symbot.chat.message import Message
 from symbot.dev.meta._base_meta_command import BaseMetaCommand
 from symbot.dev.meta._builder import Builder
+from symbot.util import updater
 from symbot.util.strings import stringify
 
 
@@ -23,8 +24,6 @@ class Command(BaseMetaCommand):
         edit a command
     delcom
         delete a command
-    get_file
-        retrieve path of module containing command
     skellify_message
         parse message to blueprint of a command
     skellify_command
@@ -128,7 +127,7 @@ class Command(BaseMetaCommand):
 
         # skellify message and command
         skeleton_message = self.skellify_message(msg, name, 'edit')
-        file = self.get_file(self.control.get_command(msg.context[1]))
+        file = updater.get_file_by_command(self.control.get_command(msg.context[1]))
         skeleton_command = self.skellify_command(file)
 
         # check if only settings are being edited
@@ -181,24 +180,8 @@ class Command(BaseMetaCommand):
                 or command.author == msg.user:
 
             # delete command and respond
-            self.builder.delete_command(command, self.get_file(command))
+            self.builder.delete_command(command)
             await self.control.respond(f'{msg.user} has removed command {name}')
-
-    def get_file(self, command):
-        """retrieve path of module containing command
-
-        Parameters
-        ----------
-        command : Command
-            command
-
-        Returns
-        -------
-        str
-            path of module containing command
-        """
-
-        return os.sep.join(command.__module__.split('.')[1:]) + '.py'
 
     def skellify_message(self, msg, name, operation):
         """parse message to blueprint of a command
