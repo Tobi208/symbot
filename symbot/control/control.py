@@ -27,6 +27,8 @@ class Control:
         tracks command cooldowns
     settings : Settings
         overrides default command settings
+    media : dict
+        dict of all media loaded dynamically
     commands : list
         dict of all commands loaded dynamically
     msg_queue : Queue
@@ -36,6 +38,10 @@ class Control:
 
     Methods
     -------
+    import_media
+        recursively import and instantiate all media in a directory
+    get_media
+        try to find media by name
     import_commands
         recursively import and instantiate all commands in a directory
     delete_command
@@ -52,6 +58,11 @@ class Control:
 
     def __init__(self):
 
+        # dynamically load in media
+        self.media = {}
+        logging.info('loading media')
+        self.import_media(f'dev{os.sep}media')
+
         # dynamically load in commands
         self.commands = {}
         logging.info('loading commands')
@@ -67,6 +78,49 @@ class Control:
         # async data structures
         self.msg_queue = None
         self.resp_queue = asyncio.Queue()
+
+    def import_media(self, path):
+        """recursively import and instantiate all media in a directory
+
+        Parameters
+        ----------
+        path : str
+            current directory of modules to be imported
+        """
+
+        splits = path.split(os.sep)
+        file = splits[-1]
+        # exclude files not meant to be imported as command
+        if file.startswith('_'):
+            return
+        # import .py module
+        elif file.endswith('.py'):
+            module = '.'.join(splits)[:-3]
+            media = import_module(f'symbot.{module}').Media(self)
+            self.media[media.name] = media
+        # import package
+        else:
+            for file in os.listdir(path):
+                # import modules from lower levels recursively
+                self.import_media(path + os.sep + file)
+
+    def get_media(self, media_name):
+        """try to find media by name
+
+        Parameters
+        ----------
+        media_name : str
+            media identifier
+
+        Returns
+        -------
+        Media
+            desired media, or None if not found
+        """
+
+        if media_name not in self.media:
+            return None
+        return self.media[media_name]
 
     def import_command(self, path):
         """recursively import and instantiate all commands in a directory
