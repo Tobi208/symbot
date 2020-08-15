@@ -22,13 +22,11 @@ python twitch chat bot
 - filter messages with blacklist
 - cleanup environment unused vars
 - proper user interface
-- escape insecure
-- secure escapes
+- escape insecure / secure escapes
 
 ## command ideas
 - local time
 - uptime
-- purge
 
 ## media ideas
 - songrequest
