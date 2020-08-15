@@ -59,7 +59,7 @@ class Builder:
         # rewrite file
         updater.write_file(code, path)
         # reload command
-        self.control.delete_command(command)
+        self.control.delete_command_file(command)
         self.control.import_command(path)
 
     def delete_command(self, command):
@@ -72,9 +72,9 @@ class Builder:
         """
 
         # delete file
-        updater.delete_command(command)
+        updater.delete_command_file(command)
         # unload command
-        self.control.delete_command(command)
+        self.control.delete_command_file(command)
 
     def assemble(self, skeleton):
         """assembles command code from skeleton

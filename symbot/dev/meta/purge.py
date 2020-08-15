@@ -32,7 +32,7 @@ class Command(BaseMetaCommand):
                 # delete command from control
                 self.control.delete_command(command)
                 # delete file containing command
-                updater.delete_command(command)
+                updater.delete_command_file(command)
 
             command_names = ', '.join([command.name for command in commands])
 

@@ -14,7 +14,7 @@ write_file
     write file
 delete_file
     delete file
-delete_command
+delete_command_file
     delete file containing command
 get_file_by_command
     get file containing command
@@ -62,7 +62,7 @@ def delete_file(file):
     os.remove(file)
 
 
-def delete_command(command):
+def delete_command_file(command):
     """delete file containing command
 
     Parameters
