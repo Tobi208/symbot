@@ -8,7 +8,7 @@ class Command(BaseMetaCommand):
 
     def __init__(self, control):
         super().__init__(control)
-        self.name = '!setcmd'
+        self.name = '!setcmdsetting'
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
