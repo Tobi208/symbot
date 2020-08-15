@@ -25,8 +25,7 @@ python twitch chat bot
 - escape insecure / secure escapes
 
 ## command ideas
-- local time
-- uptime
+- none
 
 ## media ideas
 - songrequest
