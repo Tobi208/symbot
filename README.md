@@ -24,6 +24,7 @@ python twitch chat bot
 - proper user interface
 - escape insecure / secure escapes
 - update commands in readme
+- add demo mode
 
 ## command ideas
 - none
