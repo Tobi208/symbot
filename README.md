@@ -36,5 +36,4 @@ python twitch chat bot
 - play sound
 - play video
 - poll
-- time/date
 - repeating commands
