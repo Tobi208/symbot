@@ -59,7 +59,7 @@ class Builder:
         # rewrite file
         updater.write_file(code, path)
         # reload command
-        self.control.delete_command_file(command)
+        self.control.delete_command(command)
         self.control.import_command(path)
 
     def delete_command(self, command):
