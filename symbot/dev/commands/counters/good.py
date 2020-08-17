@@ -9,21 +9,20 @@ class Command(BaseCommand):
 
     def __init__(self, control: Control):
         super().__init__(control)
-        self.name = '!deaths'
+        self.name = '!good'
         self.author = 'fd_symbicort'
 
     async def run(self, msg: Message):
-
+        try:
+            good = self.control.environment.increment('good')
+        except KeyError:
+            logging.info(f'{self.name} unable to find var good')
+            return
         try:
             broadcaster = self.control.environment.get('broadcaster')
         except KeyError:
             logging.info(f'{self.name} unable to find var broadcaster')
             return
-        try:
-            deaths = self.control.environment.get('deaths')
-        except KeyError:
-            logging.info(f'{self.name} unable to find var deaths')
-            return
 
-        response = f'{broadcaster} has died {deaths} times :('
+        response = f'{broadcaster} has done {good} things well'
         await self.control.respond(response)
