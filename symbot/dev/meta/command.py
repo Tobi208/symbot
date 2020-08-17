@@ -37,6 +37,9 @@ class Command(BaseMetaCommand):
 
         self.builder = Builder(control)
 
+        #message filter
+        self.msg_filter = re.compile('[\'\"\\\]')
+
         # message extractors
         self.arg_extractor = re.compile('\\$(.*){(.*)}')
         self.setting_extractor = re.compile('-(.*)=(.*)')
@@ -221,6 +224,10 @@ class Command(BaseMetaCommand):
 
         # start parsing after command name
         for s in msg.context[2:]:
+
+            # filter string escapes [' " \] for security
+            s = self.msg_filter.sub('', s)
+
             # $ indicates special item
             if s.startswith('$'):
                 try:
