@@ -107,15 +107,14 @@ class Builder:
         code += \
             '\n' \
             '    async def run(self, msg: Message):\n' \
-            '\n'
 
         # adjust message according to alias
         for alias in skeleton['alias']:
             code +=\
                 '\n' \
-                f'msg.command = {alias}\n' \
+                f'        msg.command = {stringify(alias)}\n' \
                 '\n' \
-                'await self.control.requeue(msg)\n'
+                '        await self.control.requeue(msg)\n'
 
         # aliases are special case
         # ignore everything else and
@@ -168,6 +167,6 @@ class Builder:
 
         # respond to control
         code += \
-            '        await self.control.respond(response)'
+            '        await self.control.respond(response)\n'
 
         return code
