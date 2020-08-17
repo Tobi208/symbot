@@ -62,7 +62,7 @@ class Command(BaseMetaCommand):
         try:
             operation = msg.context[0]
         except IndexError:
-            logging.info('!command missing operation argument')
+            logging.info(f'{self.name} missing operation argument')
             return
 
         if operation == 'add':
@@ -72,7 +72,7 @@ class Command(BaseMetaCommand):
         elif operation == 'del':
             await self.delcom(msg)
         else:
-            logging.info(f'!command encountered an undefined operation argument {operation}')
+            logging.info(f'{self.name} encountered an undefined operation argument {operation}')
 
     async def addcom(self, msg):
         """add a new command
@@ -87,15 +87,15 @@ class Command(BaseMetaCommand):
         try:
             name = msg.context[1]
         except IndexError:
-            logging.info('!command add missing command name argument')
+            logging.info(f'{self.name} add missing command name argument')
             return
         if self.control.get_command(name):
-            logging.info(f'!command add {name} already exists')
+            logging.info(f'{self.name} add {name} already exists')
             return
         try:
             msg.context[2]
         except IndexError:
-            logging.info(f'!command add {name} missing content')
+            logging.info(f'{self.name} add {name} missing content')
             return
 
         # create command blueprint
@@ -111,21 +111,22 @@ class Command(BaseMetaCommand):
         Parameters
         ----------
         msg : Message
-            user message trying to edit a command"""
+            user message trying to edit a command
+        """
 
         # extract command name
         try:
             name = msg.context[1]
         except IndexError:
-            logging.info('!command edit missing command name argument')
+            logging.info(f'{self.name} edit missing command name argument')
             return
         if not self.control.get_command(name):
-            logging.info(f'!command edit {name} does not exist')
+            logging.info(f'{self.name} edit {name} does not exist')
             return
         try:
             msg.context[2]
         except IndexError:
-            logging.info(f'!command edit {name} missing content')
+            logging.info(f'{self.name} edit {name} missing content')
             return
 
         # skellify message and command
@@ -170,11 +171,11 @@ class Command(BaseMetaCommand):
         try:
             name = msg.context[1]
         except IndexError:
-            logging.info('!command del missing command name argument')
+            logging.info(f'{self.name} del missing command name argument')
             return
         command = self.control.get_command(name)
         if not command:
-            logging.info(f'!command del {name} does not exists')
+            logging.info(f'{self.name} del {name} does not exists')
             return
 
         # check for safety conditions
@@ -236,10 +237,10 @@ class Command(BaseMetaCommand):
                     skeleton[arg].append(value)
                     skeleton['r'].append('{' + value + '}')
                 except AttributeError:
-                    logging.info(f'!command {operation} {name} has bad argument')
+                    logging.info(f'{self.name} {operation} {name} has bad argument')
                     return
                 except KeyError:
-                    logging.info(f'!command {operation} {name} encountered undefined argument')
+                    logging.info(f'{self.name} {operation} {name} encountered undefined argument')
                     return
             # - indicates setting
             elif s.startswith('-'):
@@ -253,13 +254,13 @@ class Command(BaseMetaCommand):
                     elif setting == 'on':
                         skeleton['settings']['enabled'] = value.lower() == 'true'
                     else:
-                        logging.info(f'!command {operation} {name} invalid setting {setting}')
+                        logging.info(f'{self.name} {operation} {name} invalid setting {setting}')
                         return
                 except AttributeError:
-                    logging.info(f'!command {operation} {name} has bad setting')
+                    logging.info(f'{self.name} {operation} {name} has bad setting')
                     return
                 except ValueError:
-                    logging.info(f'!command {operation} {name} can not convert setting value')
+                    logging.info(f'{self.name} {operation} {name} can not convert setting value')
                     return
             else:
                 skeleton['r'].append(s)
