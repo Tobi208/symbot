@@ -37,7 +37,7 @@ class Command(BaseMetaCommand):
 
         self.builder = Builder(control)
 
-        #message filter
+        # filter string escapes
         self.msg_filter = re.compile('[\'\"\\\]')
 
         # message extractors
