@@ -15,17 +15,15 @@ python twitch chat bot
 **warum** : _'weil halt'_
 
 ## todo
-- commands can be in packages
+- add demo mode
 - enable/disable packages
 - track command usage with new aux controller
 - filter messages with blacklist
 - cleanup environment unused vars
 - proper user interface
 - update commands in readme
-- add demo mode
-- media settings aka enable/disable
 
-## command ideas
+## command/media ideas
 - songrequest
 - on screen counter
 - tts
