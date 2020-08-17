@@ -14,5 +14,5 @@ class Command(BaseCommand):
 
         recipient = msg.user
 
-        response = f'Hey there, {recipient} HeyGuys'
+        response = f'Hello there, {recipient} HeyGuys'
         await self.control.respond(response)

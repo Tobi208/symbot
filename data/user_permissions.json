@@ -1,8 +1,3 @@
 {
-  "broadcaster" : 0,
-  "moderator" : 1,
-  "whitelisted" : 2,
-  "default" : 3,
-  "blacklisted" : 4,
-  "fd_symbicort": 0
+  "Jane Doe": 0
 }

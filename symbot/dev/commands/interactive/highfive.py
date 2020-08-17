@@ -21,5 +21,5 @@ class Command(BaseCommand):
             return
         user = msg.user
 
-        response = f'{user} hat {recipient} ein highfive gegeben'
+        response = f'{user} gave {recipient} a highfive!'
         await self.control.respond(response)
