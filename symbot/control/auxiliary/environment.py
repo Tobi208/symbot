@@ -23,6 +23,8 @@ class Environment:
         initialize new variable as 0 if it doesn't exist yet
     increment
         increment the value of a variable
+    delete
+        delete variable from environment
     """
 
     def __init__(self):
@@ -74,6 +76,14 @@ class Environment:
             set value
         """
 
+        # if var already exists, typecast new value to old type
+        if var in self.environment:
+            val = type(self.environment[var])(val)
+        # if var is a digit, typecast to int
+        elif type(val) == str:
+            if val.isdigit():
+                val = int(val)
+
         self.environment[var] = val
         update_json(self.environment, self.file_path)
         return val
@@ -108,3 +118,14 @@ class Environment:
         self.environment[var] += 1
         update_json(self.environment, self.file_path)
         return self.environment[var]
+
+    def delete(self, var):
+        """delete variable from environment
+
+        Parameters
+        ----------
+        var : str
+            variable to be deleted from environment
+        """
+
+        del self.environment[var]
