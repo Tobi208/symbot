@@ -86,7 +86,7 @@ class Builder:
         """
 
         # header always the same
-        code =  \
+        code = \
             'import logging\n' \
             '\n' \
             'from symbot.chat.message import Message\n' \
@@ -106,11 +106,11 @@ class Builder:
 
         code += \
             '\n' \
-            '    async def run(self, msg: Message):\n' \
+            '    async def run(self, msg: Message):\n'
 
         # adjust message according to alias
         for alias in skeleton['alias']:
-            code +=\
+            code += \
                 '\n' \
                 f'        msg.command = {stringify(alias)}\n' \
                 '\n' \

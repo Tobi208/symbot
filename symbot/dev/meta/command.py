@@ -1,6 +1,5 @@
 import logging
 import re
-import os
 
 from symbot.chat.message import Message
 from symbot.dev.meta._base_meta_command import BaseMetaCommand
@@ -182,7 +181,6 @@ class Command(BaseMetaCommand):
         # MAYBE increase security
         if self.control.permissions.check_meta(command.permission_level, msg.user) \
                 or command.author == msg.user:
-
             # delete command and respond
             self.builder.delete_command(command)
             await self.control.respond(f'{msg.user} has removed command {name}')

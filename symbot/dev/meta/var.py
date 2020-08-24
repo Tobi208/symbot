@@ -110,4 +110,3 @@ class Command(BaseMetaCommand):
 
         response = f'{var} has been deleted'
         await self.control.respond(response)
-

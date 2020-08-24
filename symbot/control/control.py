@@ -2,7 +2,7 @@ import asyncio
 import logging
 import os
 import sys
-from importlib import import_module, reload
+from importlib import import_module
 
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
