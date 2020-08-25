@@ -1,6 +1,13 @@
 import asyncio
 import logging
 import sys
+import os
+
+# program ran fine in IDE, but wouldn't run from terminal
+# with this code block, the code runs from terminal too
+dir_path = os.path.dirname(os.path.realpath(__file__))
+parent_dir_path = os.path.abspath(os.path.join(dir_path, os.pardir))
+sys.path.insert(0, parent_dir_path)
 
 from symbot.chat.chat import Chat
 from symbot.control.control import Control
