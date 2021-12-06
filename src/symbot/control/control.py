@@ -3,7 +3,9 @@ import logging
 import os
 import sys
 from importlib import import_module
+from os.path import join
 
+from symbot.config import dev_path
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
 from symbot.control.auxiliary.permissions import Permissions
@@ -61,13 +63,13 @@ class Control:
         # dynamically load in media
         self.media = {}
         logging.info('loading media')
-        self.import_media(f'dev{os.sep}media')
+        self.import_media(join(dev_path, 'media'))
 
         # dynamically load in commands
         self.commands = {}
         logging.info('loading commands')
-        self.import_command(f'dev{os.sep}commands')
-        self.import_command(f'dev{os.sep}meta')
+        self.import_command(join(dev_path, 'commands'))
+        self.import_command(join(dev_path, 'meta'))
 
         # auxiliary controllers
         self.permissions = Permissions()
@@ -102,7 +104,7 @@ class Control:
         else:
             for file in os.listdir(path):
                 # import modules from lower levels recursively
-                self.import_media(path + os.sep + file)
+                self.import_media(join(path, file))
 
     def get_media(self, media_name):
         """try to find media by name
@@ -145,7 +147,7 @@ class Control:
         else:
             for file in os.listdir(path):
                 # import modules from lower levels recursively
-                self.import_command(path + os.sep + file)
+                self.import_command(join(path, file))
 
     def delete_command(self, command):
         """delete command from dict and unload module
