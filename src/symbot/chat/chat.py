@@ -2,6 +2,7 @@ import asyncio
 import logging
 
 from symbot.chat.message import Message
+from symbot.config import *
 
 
 class Chat:

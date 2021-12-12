@@ -97,8 +97,12 @@ class Control:
             return
         # import .py module
         elif file.endswith('.py'):
-            module = '.'.join(splits)[:-3]
-            media = import_module(f'symbot.{module}').Media(self)
+            module = file[:-3]
+            for m in splits[::-1][1:]:
+                module = '.'.join([m, module])
+                if m == 'symbot':
+                    break
+            media = import_module(module).Media(self)
             self.media[media.name] = media
         # import package
         else:
@@ -140,8 +144,12 @@ class Control:
             return
         # import .py module
         elif file.endswith('.py'):
-            module = '.'.join(splits)[:-3]
-            command = import_module(f'symbot.{module}').Command(self)
+            module = file[:-3]
+            for m in splits[::-1][1:]:
+                module = '.'.join([m, module])
+                if m == 'symbot':
+                    break
+            command = import_module(module).Command(self)
             self.commands[command.name] = command
         # import package
         else:
