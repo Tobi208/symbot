@@ -8,12 +8,14 @@ For broadcasters without any programming knowledge, this chat bot still provides
 
 ### Getting Started
 
-1. Symbot requires ``Python 3.8`` or newer, but only uses the standard library.
-2. Get your [Twitch API Key](https://twitchapps.com/tmi/).
-3. Enter your channel name, name of your bot and your key in ``config.py``.
-4. Enter yourself as ``"broadcaster" : "<name>"`` in ``environment.json``.
-5. Give yourself and your bot permission level ``0`` in ``user_permissions.json``.
-6. Become familiar with the ``meta commands``.
+1. Symbot requires ``Python 3.6`` or newer, but only uses the standard library.
+2. ``pip install symbot``
+3. Get your [Twitch API Key](https://twitchapps.com/tmi/).
+4. Enter your channel name, name of your bot and your key in ``config.py``.
+5. Enter yourself as ``"broadcaster" : "<name>"`` in ``environment.json``.
+6. Give yourself and your bot permission level ``0`` in ``user_permissions.json``.
+7. Become familiar with the ``meta commands``.
+8. ``python -m symbot``
 
 ### Meta Commands
 
@@ -158,6 +160,8 @@ This project is far from complete, but it is fully functional as it is.
 Please report any bugs or concerns.
 
 ### Future todos and command or media ideas
+- add a cli
+- add graceful ctrl+C shutdown
 - add demo mode
 - enable/disable packages
 - track command usage with new aux controller
