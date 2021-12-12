@@ -1,6 +1,8 @@
 import json
 import os
 
+from os.path import abspath, join
+
 """Utility to update files when data changes
 
 MAYBE make oop instead of static
@@ -83,4 +85,4 @@ def get_file_by_command(command):
         command contained by file
     """
 
-    return os.sep.join(command.__module__.split('.')[1:]) + '.py'
+    return join(*abspath(command.__module__).split('.')) + '.py'

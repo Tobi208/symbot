@@ -1,7 +1,8 @@
 import json
 import logging
-import os
+from os.path import join
 
+from symbot.config import data_path
 from symbot.util.updater import update_json
 
 
@@ -30,7 +31,7 @@ class Environment:
     def __init__(self):
 
         # MAYBE put path into config or somewhere else
-        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}environment.json'
+        self.file_path = join(data_path, 'environment.json')
 
         # load environment from data folder
         try:

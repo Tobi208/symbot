@@ -3,7 +3,9 @@ import logging
 import os
 import sys
 from importlib import import_module
+from os.path import join
 
+from symbot.config import dev_path
 from symbot.control.auxiliary.cooldowns import Cooldowns
 from symbot.control.auxiliary.environment import Environment
 from symbot.control.auxiliary.permissions import Permissions
@@ -61,13 +63,13 @@ class Control:
         # dynamically load in media
         self.media = {}
         logging.info('loading media')
-        self.import_media(f'dev{os.sep}media')
+        self.import_media(join(dev_path, 'media'))
 
         # dynamically load in commands
         self.commands = {}
         logging.info('loading commands')
-        self.import_command(f'dev{os.sep}commands')
-        self.import_command(f'dev{os.sep}meta')
+        self.import_command(join(dev_path, 'commands'))
+        self.import_command(join(dev_path, 'meta'))
 
         # auxiliary controllers
         self.permissions = Permissions()
@@ -95,14 +97,18 @@ class Control:
             return
         # import .py module
         elif file.endswith('.py'):
-            module = '.'.join(splits)[:-3]
-            media = import_module(f'symbot.{module}').Media(self)
+            module = file[:-3]
+            for m in splits[::-1][1:]:
+                module = '.'.join([m, module])
+                if m == 'symbot':
+                    break
+            media = import_module(module).Media(self)
             self.media[media.name] = media
         # import package
         else:
             for file in os.listdir(path):
                 # import modules from lower levels recursively
-                self.import_media(path + os.sep + file)
+                self.import_media(join(path, file))
 
     def get_media(self, media_name):
         """try to find media by name
@@ -138,14 +144,18 @@ class Control:
             return
         # import .py module
         elif file.endswith('.py'):
-            module = '.'.join(splits)[:-3]
-            command = import_module(f'symbot.{module}').Command(self)
+            module = file[:-3]
+            for m in splits[::-1][1:]:
+                module = '.'.join([m, module])
+                if m == 'symbot':
+                    break
+            command = import_module(module).Command(self)
             self.commands[command.name] = command
         # import package
         else:
             for file in os.listdir(path):
                 # import modules from lower levels recursively
-                self.import_command(path + os.sep + file)
+                self.import_command(join(path, file))
 
     def delete_command(self, command):
         """delete command from dict and unload module

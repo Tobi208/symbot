@@ -1,7 +1,8 @@
 import json
 import logging
-import os
+from os.path import join
 
+from symbot.config import data_path
 from symbot.util.updater import update_json
 
 
@@ -29,7 +30,7 @@ class Settings:
         self.commands = commands
 
         # MAYBE put path into config or somewhere else
-        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}command_settings.json'
+        self.file_path = join(data_path, 'command_settings.json')
 
         # load command settings from data folder
         try:

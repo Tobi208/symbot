@@ -1,7 +1,8 @@
 import json
 import logging
-import os
+from os.path import join
 
+from symbot.config import data_path
 from symbot.util.updater import update_json
 
 
@@ -37,7 +38,7 @@ class Permissions:
     def __init__(self):
 
         # MAYBE put path into config or somewhere else
-        self.file_path = f'{os.getcwd()[:-6]}data{os.sep}user_permissions.json'
+        self.file_path = join(data_path, 'user_permissions.json')
 
         # load permissions from data folder
         try:

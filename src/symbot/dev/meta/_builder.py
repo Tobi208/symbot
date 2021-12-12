@@ -1,8 +1,9 @@
-import os
 import re
+from os.path import join
 
 from symbot.util import updater
 from symbot.util.strings import stringify
+from symbot.config import dev_path
 
 
 class Builder:
@@ -35,7 +36,7 @@ class Builder:
         # assemble command
         code = self.assemble(skeleton)
         file_name = re.search(r'\w+', skeleton['settings']['name']).group(0)
-        file_path = f'dev{os.sep}commands{os.sep}new{os.sep}{file_name}.py'
+        file_path = join(dev_path, 'commands', 'new', file_name + '.py')
         # write file
         updater.write_file(code, file_path)
         # load command
@@ -74,7 +75,7 @@ class Builder:
         # delete file
         updater.delete_command_file(command)
         # unload command
-        self.control.delete_command_file(command)
+        self.control.delete_command(command)
 
     def assemble(self, skeleton):
         """assembles command code from skeleton
