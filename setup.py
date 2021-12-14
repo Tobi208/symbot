@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="symbot",
-    version="0.1.0",
+    version="0.1.1",
     author="Tobias Lass",
     author_email="tobi208@github.com",
     description="A twitch chat bot for developers.",
@@ -23,5 +23,5 @@ setuptools.setup(
     package_dir={"": "src"},
     packages=setuptools.find_packages(where="src"),
     package_data={"symbot": ["data/*.json"]},
-    python_requires=">=3.6",
+    python_requires=">=3.7",
 )

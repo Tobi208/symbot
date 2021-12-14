@@ -8,7 +8,7 @@ For broadcasters without any programming knowledge, this chat bot still provides
 
 ### Getting Started
 
-1. Symbot requires ``Python 3.6`` or newer, but only uses the standard library.
+1. Symbot requires ``Python 3.7`` or newer, but only uses the standard library.
 2. ``pip install symbot``
 3. Get your [Twitch API Key](https://twitchapps.com/tmi/).
 4. Enter your channel name, name of your bot and your key in ``config.py``.
